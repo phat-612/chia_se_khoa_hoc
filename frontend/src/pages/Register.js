@@ -45,7 +45,6 @@ const Register = () => {
     event.preventDefault();
     // nếu input rỗng thì return
     if (!validForm()) return;
-    console.log(inpRegister);
     axios
       .post(`${process.env.REACT_APP_API_URL}/api/register`, inpRegister)
       .then((response) => {

@@ -16,7 +16,6 @@ const register = async (req, res) => {
 };
 const login = async (req, res) => {
   const { username, password } = req.body;
-  console.log(username, password);
   const user = await UserModel.getUserByUserName(username);
   if (user.error) {
     return res.status(400).json({ error: "Invalid info login" });
@@ -31,7 +30,6 @@ const login = async (req, res) => {
       expiresIn: "1h",
     }
   );
-  console.log(token);
   return res.status(200).json({
     message: "User logged in successfully",
     user: {

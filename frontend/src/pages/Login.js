@@ -27,8 +27,7 @@ const Login = () => {
         navigate("/me");
       })
       .catch((error) => {
-        console.log(error);
-        // setError(error.response.data.error);
+        setError(error.response.data.error);
       });
   };
   useEffect(() => {
