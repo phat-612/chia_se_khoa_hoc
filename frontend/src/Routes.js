@@ -5,6 +5,8 @@ import MeLayout from "./layouts/MeLayout";
 import PrivateRoute from "./components/PrivateRoute";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Profile from "./pages/Profile";
+import ChangePassword from "./pages/ChangePassword";
 import MyCourses from "./pages/MyCourses";
 
 const routes = createBrowserRouter([
@@ -31,6 +33,14 @@ const routes = createBrowserRouter([
       <MeLayout />
     ),
     children: [
+      {
+        path: "",
+        element: <Profile />,
+      },
+      {
+        path: "change-password",
+        element: <ChangePassword />,
+      },
       {
         path: "MyCourses",
         element: <MyCourses />,
