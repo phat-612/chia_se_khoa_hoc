@@ -1,0 +1,30 @@
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Chi Tiết Khóa Học</h2>
+  <div class="row">
+    <div class="col-md-6">
+      <img
+        src="https://via.placeholder.com/300x200"
+        alt="Thumbnail"
+        class="img-fluid"
+      />
+    </div>
+    <div class="col-md-6">
+      <h3><%= data.course.title %></h3>
+      <p><strong>Mô Tả:</strong> <%= data.course.description %></p>
+      <p><strong>Danh Mục:</strong> <%= data.course.category_id %></p>
+      <p><strong>Ngày Tạo:</strong> <%= data.course.created_at %></p>
+      <p>
+        <strong>URL Khóa Học:</strong>
+        <a href="<%= data.course.course_url %>" target="_blank"
+          >Truy cập khóa học</a
+        >
+      </p>
+    </div>
+  </div>
+  <div class="d-flex justify-content-between mt-3">
+    <a href="/courses/edit/<%= data.course.id %>" class="btn btn-warning">
+      <i class="bi bi-pencil-square"></i> Sửa Khóa Học
+    </a>
+    <a href="/courses" class="btn btn-secondary">Quay lại</a>
+  </div>
+</div>
