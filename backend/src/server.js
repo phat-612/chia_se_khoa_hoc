@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv/config";
+import bodyParser from "body-parser";
 import cors from "cors";
 
 // import tự viết
@@ -11,6 +12,9 @@ const app = express();
 
 // cấu hình cors
 app.use(cors());
+// cấu hình body parser
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 // cấu hình view engine
 viewEngine(app);
 // cấu hình router
