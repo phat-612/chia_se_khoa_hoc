@@ -13,4 +13,10 @@ apiRouter.post("/update-password", ApiController.updatePassword);
 apiRouter.get("/get-all-users", auth.authToken, ApiController.getAllUsers);
 apiRouter.get("/get-info-user", auth.authToken, ApiController.getUserById);
 
+// CATEGORY
+apiRouter.post("/addCategory", ApiController.addCategory);
+apiRouter.post("/updateCategory", ApiController.updateCategory);
+apiRouter.post("/removeCategory/:idCategory", ApiController.removeCategory);
+// course
+apiRouter.post("/addCourse", ApiController.addCourse);
 export default apiRouter;

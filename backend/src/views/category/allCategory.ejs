@@ -1,10 +1,6 @@
 <div class="container">
   <div class="d-flex justify-content-end">
-    <button
-      class="btn btn-primary"
-      data-bs-toggle="modal"
-      data-bs-target="#ThemDanhMucModal"
-    >
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ThemDanhMucModal">
       Thêm Danh Mục
     </button>
   </div>
@@ -17,80 +13,72 @@
       </tr>
     </thead>
     <tbody>
+      <% data.categories.forEach(function(category,ind) { %>
       <tr>
-        <th scope="row">1</th>
-        <td>Toán</td>
-        <td>
-          <button
-            class="btn btn-success"
-            data-bs-toggle="modal"
-            data-bs-target="#SuaDanhMucModal"
-          >
+        <th scope="row"><%= ind+1 %></th>
+        <td><%= category.name %></td>
+        <td class="row">
+          <button class="btn btn-success editCategoryBtn col-1" data-bs-toggle="modal" data-bs-target="#SuaDanhMucModal" data-bs-id="<%= category.id %>" data-bs-name="<%= category.name %>">
             Sửa
           </button>
-          <button class="btn btn-danger">Xóa</button>
+          <form action="/api/removeCategory/<%= category.id %>" method="post" class="col-5">
+            <button type="submit" class="btn btn-danger">Xóa</button>
+          </form>
         </td>
       </tr>
+      <% }) %>
+
     </tbody>
   </table>
 </div>
 
 <!-- Modal Thêm Danh Mục -->
-<div
-  class="modal fade"
-  id="ThemDanhMucModal"
-  tabindex="-1"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="ThemDanhMucModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">THÊM DANH MỤC</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <label for="" class="form-label">Tên Danh Mục : </label>
-        <input type="text" class="form-control" />
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">THÊM</button>
-      </div>
+      <form action="/api/addCategory" method="post">
+        <div class="modal-body">
+          <label for="" class="form-label">Tên Danh Mục : </label>
+          <input name="name" type="text" class="form-control" />
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">THÊM</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
 
 <!-- Modal Sửa Danh Mục -->
-<div
-  class="modal fade"
-  id="SuaDanhMucModal"
-  tabindex="-1"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="SuaDanhMucModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">SỬA DANH MỤC</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <label for="" class="form-label">Tên Danh Mục : </label>
-        <input type="text" class="form-control" />
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success">SỬA</button>
-      </div>
+      <form action="/api/updateCategory" method="post">
+        <input type="hidden" name="id" class="editCategoryIdInput">
+        <div class="modal-body">
+          <label for="" class="form-label">Tên Danh Mục : </label>
+          <input name="name" type="text" class="form-control editCategoryNameInput" />
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">SỬA</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
+
+
+<script>
+  $(".editCategoryBtn").on("click", function(e) {
+    $(".editCategoryNameInput").val(e.target.getAttribute("data-bs-name"));
+    $(".editCategoryIdInput").val(e.target.getAttribute("data-bs-id"));
+  });
+</script>

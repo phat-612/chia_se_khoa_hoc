@@ -1,6 +1,7 @@
 import { compareSync, hashSync } from "bcrypt";
 import jwt from "jsonwebtoken";
 import UserModel from "../services/UserModel";
+import CategoryModel from "../services/CategoryModel";
 
 const register = async (req, res) => {
   const { username, password, email, fullname } = req.body;
@@ -89,6 +90,69 @@ const getUserById = async (req, res) => {
   res.json(user);
 };
 
+// CATEGORY
+const getAllCategory = async (req, res) => {
+  const categories = await CategoryModel.getAllCategory();
+  return categories;
+};
+
+const addCategory = async (req, res) => {
+  const { name } = req.body;
+  const category = await CategoryModel.addCategory(name);
+  if (category.error) {
+    return res.status(400).json({ error: "Add category failed" });
+  }
+  return res.redirect("back");
+};
+
+const updateCategory = async (req, res) => {
+  const { id, name } = req.body;
+  const category = await CategoryModel.updateCategory(id, name);
+  if (category.error) {
+    return res.status(400).json({ error: "Update category failed" });
+  }
+  return res.redirect("back");
+};
+
+// const removeCategory = async (req, res) => {
+//   const { idCategory } = req.params;
+//   try {
+//     await CategoryModel.removeCategory(idCategory);
+//     res.redirect("back");
+//   } catch (error) {
+//     if (error.code === "ER_ROW_IS_REFERENCED_2") {
+//       res.locals.error = "Có Khóa Học Trong Danh Mục Này";
+//       console.log("Có Khóa Học Trong Danh Mục Này");
+//       return res.redirect("back");
+//     }
+//     console.error(error.message);
+//     res.status(500).send("Lỗi máy chủ");
+//   }
+// };
+
+const removeCategory = async (req, res) => {
+  const { idCategory } = req.params;
+  try {
+    await CategoryModel.removeCategory(idCategory);
+    res.send(
+      "<script>alert('Danh mục đã được xóa thành công!'); window.history.back();</script>"
+    );
+  } catch (error) {
+    if (error.code === "ER_ROW_IS_REFERENCED_2") {
+      return res.send(
+        "<script>alert('Không thể xóa danh mục vì còn khóa học liên quan.'); window.history.back();</script>"
+      );
+    }
+    console.error(error.message);
+    res.status(500).send("Lỗi máy chủ");
+  }
+};
+// course
+
+const addCourse = async (req, res) => {
+  const { newCourse } = req.body;
+  const course = await CategoryModel.addCourse(newCourse);
+};
 export default {
   register,
   login,
@@ -96,4 +160,12 @@ export default {
   updatePassword,
   getAllUsers,
   getUserById,
+
+  // CATEGORY
+  getAllCategory,
+  addCategory,
+  updateCategory,
+  removeCategory,
+  // course
+  addCourse,
 };

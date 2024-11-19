@@ -3,15 +3,10 @@
 
   <div class="d-flex justify-content-between mb-3">
     <form class="d-flex w-75">
-      <input
-        class="form-control me-2"
-        type="search"
-        placeholder="Tìm kiếm theo tên khóa học"
-        aria-label="Search"
-      />
+      <input class="form-control me-2" type="search" placeholder="Tìm kiếm theo tên khóa học" aria-label="Search" />
       <button class="btn btn-outline-primary" type="button">Tìm</button>
     </form>
-    <a class="btn btn-success">
+    <a class="btn btn-success" href="/admin/addCourse">
       <i class="bi bi-plus-circle"></i> Thêm Khóa Học
     </a>
   </div>
@@ -34,27 +29,20 @@
       <tr>
         <td><%= index + 1 %></td>
         <td>
-          <img
-            src="https://via.placeholder.com/80x50"
-            alt="Thumbnail"
-            class="img-thumbnail"
-          />
+          <img src="https://via.placeholder.com/80x50" alt="Thumbnail" class="img-thumbnail" />
         </td>
         <td><%= course.title %></td>
         <td><%= course.description %></td>
         <td><%= course.category_id %></td>
         <td><%= course.created_at %></td>
         <td>
-          <a
-            href="/admin/detailCourse/<%= course.id %>"
-            class="btn btn-success btn-sm me-2"
-          >
+          <a href="/admin/detailCourse/<%= course.id %>" class="btn btn-success btn-sm me-2">
             <i class="bi bi-eye"></i> Xem
           </a>
 
-          <button class="btn btn-primary btn-sm me-2">
+          <a class="btn btn-primary btn-sm me-2" href="/admin/editCourse/<%= course.id %>">
             <i class="bi bi-pencil-square"></i> Sửa
-          </button>
+          </a>
           <button class="btn btn-danger btn-sm">
             <i class="bi bi-trash"></i> Xóa
           </button>

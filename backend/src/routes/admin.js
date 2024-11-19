@@ -5,9 +5,13 @@ import AdminController from "../controllers/AdminController";
 const adminRouter = express.Router();
 
 adminRouter.get("/", AdminController.getCoursesPage);
+// CATEGORY
 adminRouter.get("/category", AdminController.getCategoryPage);
+
+// COURSES
 adminRouter.get("/course", AdminController.getCoursePage);
 adminRouter.get("/detailCourse/:id", AdminController.getDetailCourse);
 adminRouter.get("/editCourse/:id", AdminController.getEditCourse);
+adminRouter.get("/addCourse", AdminController.getAddCourse);
 
 export default adminRouter;

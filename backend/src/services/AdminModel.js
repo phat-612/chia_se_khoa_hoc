@@ -1,6 +1,5 @@
 import pool from "../configs/db";
 // lấy danh sách khóa học
-
 const getCourses = async () => {
   const sql = "SELECT * FROM courses";
   try {
@@ -14,4 +13,16 @@ const getDetailCourse = async (id) => {
   const [row] = await pool.execute("SELECT * FROM `courses` where id=?", [id]);
   return row[0];
 };
-export default { getCourses, getDetailCourse };
+
+// lấy danh sách danh mục
+const getCategories = async () => {
+  const sql = "SELECT * FROM categories";
+  try {
+    const [rows] = await pool.execute(sql);
+    return rows;
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+
+export default { getCourses, getDetailCourse, getCategories };

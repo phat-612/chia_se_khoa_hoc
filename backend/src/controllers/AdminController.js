@@ -1,17 +1,24 @@
 import AdminModel from "../services/AdminModel";
+import CategoryModel from "../services/CategoryModel";
+
 const getCoursesPage = async (req, res) => {
   res.render("hello");
 };
 
+// CATEGORY
 const getCategoryPage = async (req, res) => {
+  const categories = await CategoryModel.getAllCategory();
   res.render("main", {
     data: {
       title: "Courses",
       header: "partials/header",
       page: "category/allCategory",
+      categories,
     },
   });
 };
+
+// COURSES
 
 const getCoursePage = async (req, res) => {
   const courses = await AdminModel.getCourses();
@@ -21,6 +28,17 @@ const getCoursePage = async (req, res) => {
       header: "partials/header",
       page: "courses/course",
       courses: courses,
+    },
+  });
+};
+const getAddCourse = async (req, res) => {
+  const categories = await AdminModel.getCategories();
+  res.render("main", {
+    data: {
+      title: "Add Course",
+      header: "partials/header",
+      page: "courses/addCourse",
+      categories,
     },
   });
 };
@@ -46,10 +64,12 @@ const getEditCourse = async (req, res) => {
     },
   });
 };
+
 export default {
   getCoursesPage,
   getCategoryPage,
   getCoursePage,
   getDetailCourse,
   getEditCourse,
+  getAddCourse,
 };
