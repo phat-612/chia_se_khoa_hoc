@@ -5,7 +5,8 @@ import axios from "axios";
 const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({});
-  useEffect(() => {
+  const [loading, setLoading] = useState(true);
+  const refreshUser = () => {
     const token = Cookie.get("accessToken");
     if (token) {
       axios
@@ -15,15 +16,25 @@ const AuthProvider = ({ children }) => {
           },
         })
         .then((response) => {
-          setUser(response.data.user);
+          setUser(response.data.user || {});
+          setLoading(false);
         })
         .catch((error) => {
           Cookie.remove("accessToken");
+          setLoading(false);
+        })
+        .finally(() => {
+          setLoading(false);
         });
     }
+    setLoading(false);
+  };
+  useEffect(() => {
+    refreshUser();
   }, []);
+
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, loading, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

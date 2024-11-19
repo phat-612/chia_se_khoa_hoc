@@ -11,19 +11,32 @@ const Login = () => {
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { user, setUser } = useContext(AuthContext);
+  const { user, setUser, refreshUser } = useContext(AuthContext);
 
   const handleChangeInput = (event) => {
     const { name, value } = event.target;
     setInpUser({ ...inpUser, [name]: value });
   };
+  const validForm = () => {
+    if (!inpUser.username || !inpUser.password) {
+      setError("Please enter all fields");
+      return false;
+    }
+    if (inpUser.password.length < 6) {
+      setError("Password must be at least 6 characters");
+      return false;
+    }
+    setError("");
+    return true;
+  };
   const handleLogin = (event) => {
     event.preventDefault();
+    if (!validForm()) return;
     axios
       .post(`${process.env.REACT_APP_API_URL}/api/login`, inpUser)
       .then((response) => {
-        Cookie.set("accessToken", response.data.token, { expires: 1 });
-        setUser(response.data.user);
+        Cookie.set("accessToken", response.data.accessToken, { expires: 1 });
+        refreshUser();
         navigate("/me");
       })
       .catch((error) => {
