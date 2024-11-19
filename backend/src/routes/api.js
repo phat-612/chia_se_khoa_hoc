@@ -28,4 +28,6 @@ apiRouter.post("/updateCategory", ApiController.updateCategory);
 apiRouter.post("/removeCategory/:idCategory", ApiController.removeCategory);
 // course
 apiRouter.post("/addCourses", ApiController.addCourse);
+apiRouter.post("/update/:idCourse", ApiController.updateCourse);
+apiRouter.get("/removeCourse/:idCourse", ApiController.removeCourse);
 export default apiRouter;

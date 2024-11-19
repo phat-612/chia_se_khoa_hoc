@@ -1,7 +1,7 @@
 <div class="container mt-5">
   <h2 class="text-center mb-4">Sửa Khóa Học</h2>
 
-  <form action="/courses/update/<%= data.course.id %>" method="POST">
+  <form action="/api/update/<%= data.course.id %>" method="POST">
     <div class="row">
       <div class="col-md-6">
         <div class="mb-3">
@@ -10,8 +10,8 @@
             type="text"
             class="form-control"
             id="thumbnail"
-            name="thumbnail"
-            value="<%= data.course.thumbnail %>"
+            name="thumbnail_url"
+            value="<%= data.course.thumbnail_url %>"
             placeholder="URL hình ảnh"
           />
         </div>

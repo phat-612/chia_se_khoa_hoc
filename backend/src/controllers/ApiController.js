@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import UserModel from "../services/UserModel";
 import CategoryModel from "../services/CategoryModel";
 import CourseModel from "../services/CourseModel";
+import AdminModel from "../services/AdminModel";
 const register = async (req, res) => {
   const { username, password, email, fullname } = req.body;
   const hashPassword = hashSync(password, 10);
@@ -161,7 +162,17 @@ const removeCategory = async (req, res) => {
 };
 // course
 const addCourse = async (req, res) => {
-  const course = await CourseModel.addCourse(req.body);
+  await CourseModel.addCourse(req.body);
+  return res.redirect("/admin/course");
+};
+const removeCourse = async (req, res) => {
+  const { idCourse } = req.params;
+  await CourseModel.removeCourse(idCourse);
+  return res.redirect("/admin/course");
+};
+const updateCourse = async (req, res) => {
+  const { idCourse } = req.params;
+  await CourseModel.updateCourse(idCourse, req.body);
   return res.redirect("/admin/course");
 };
 export default {
@@ -180,4 +191,6 @@ export default {
   removeCategory,
   // course
   addCourse,
+  removeCourse,
+  updateCourse,
 };

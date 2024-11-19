@@ -1,10 +1,7 @@
 import AdminModel from "../services/AdminModel";
 import CategoryModel from "../services/CategoryModel";
+import CourseModel from "../services/CourseModel";
 import UserModel from "../services/UserModel";
-
-const getCoursesPage = async (req, res) => {
-  res.render("hello");
-};
 
 // CATEGORY
 const getCategoryPage = async (req, res) => {
@@ -21,7 +18,7 @@ const getCategoryPage = async (req, res) => {
 
 // COURSES
 const getCoursePage = async (req, res) => {
-  const courses = await AdminModel.getCourses();
+  const courses = await CourseModel.getCourses();
   res.render("main", {
     data: {
       title: "Course",
@@ -32,7 +29,7 @@ const getCoursePage = async (req, res) => {
   });
 };
 const getAddCourse = async (req, res) => {
-  const categories = await AdminModel.getCategories();
+  const categories = await CourseModel.getCategories();
   res.render("main", {
     data: {
       title: "Add Course",
@@ -43,7 +40,7 @@ const getAddCourse = async (req, res) => {
   });
 };
 const getDetailCourse = async (req, res) => {
-  const course = await AdminModel.getDetailCourse(req.params.id);
+  const course = await CourseModel.getDetailCourse(req.params.id);
   res.render("main", {
     data: {
       title: "detailCourse",
@@ -54,7 +51,7 @@ const getDetailCourse = async (req, res) => {
   });
 };
 const getEditCourse = async (req, res) => {
-  const course = await AdminModel.getDetailCourse(req.params.id);
+  const course = await CourseModel.getDetailCourse(req.params.id);
   res.render("main", {
     data: {
       title: "detailCourse",
@@ -77,7 +74,6 @@ const getUserPage = async (req, res) => {
   });
 };
 export default {
-  getCoursesPage,
   getCategoryPage,
   getCoursePage,
   getDetailCourse,
