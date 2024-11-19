@@ -1,19 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
+import Cookie from "js-cookie";
+import { AuthContext } from "../contexts/AuthContext";
 
 const Profile = () => {
-  const [dataUser, setDataUser] = useState({
-    fullname: "Nguyen Van A",
-    email: "nva@gmail.com",
-  });
+  const { user } = useContext(AuthContext);
   const [isEdit, setIsEdit] = useState(false);
   const [inpProfile, setInpProfile] = useState({
-    fullname: "",
-    email: "",
+    fullname: user.fullname,
+    email: user.email,
     avatar: null,
-    avatarPreview: "",
+    avatarPreview: user.avatar,
   });
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    setInpProfile({
+      fullname: user.fullname || "",
+      email: user.email || "",
+      avatar: null,
+      avatarPreview: user.avatar || "",
+    });
+  }, [user]);
 
   const handleChangeInput = (event) => {
     const { name, value } = event.target;
@@ -30,21 +38,46 @@ const Profile = () => {
   const handleCancel = () => {
     setIsEdit(false);
     setInpProfile({
-      fullname: dataUser.fullname,
-      email: dataUser.email,
+      fullname: user.fullname,
+      email: user.email,
       avatar: null,
       avatarPreview: "",
     });
   };
-  const handleSubmitEdit = (event) => {
-    event.preventDefault();
+  const isVaildForm = () => {
     if (!inpProfile.fullname || !inpProfile.email) {
       setError("Please enter all fields");
-      return;
+      return false;
     }
-    // sau khi gọi api cập nhật thành công
+    if (!inpProfile.email.includes("@")) {
+      setError("Invalid email");
+      return false;
+    }
     setError("");
-    setIsEdit(false);
+    return true;
+  };
+  const handleSubmitEdit = (event) => {
+    event.preventDefault();
+    if (!isVaildForm()) return;
+    const formData = new FormData();
+    formData.append("fullname", inpProfile.fullname);
+    formData.append("email", inpProfile.email);
+    // formData.append("avatar", inpProfile.avatar);
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/api/update-info-user`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${Cookie.get("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        setError("");
+        setIsEdit(false);
+      })
+      .catch((error) => {
+        setError(error.response.data.error);
+      });
+    // sau khi gọi api cập nhật thành công
   };
   return !isEdit ? (
     <div>
@@ -54,12 +87,12 @@ const Profile = () => {
             <div className="card">
               <div className="card-body text-center">
                 <img
-                  src={dataUser.avatar || "https://via.placeholder.com/150"}
+                  src={user.avatar || "https://via.placeholder.com/150"}
                   className="rounded-circle mb-3"
                   alt="Avatar"
                 />
-                <h5 className="card-title">{dataUser.fullname}</h5>
-                <p className="card-text">{dataUser.email}</p>
+                <h5 className="card-title">{user.fullname}</h5>
+                <p className="card-text">{user.email}</p>
                 <button
                   className="btn btn-primary"
                   onClick={() => {
@@ -129,7 +162,11 @@ const Profile = () => {
                     />
                   </div>
                   <div className="d-flex flex-row-reverse gap-2">
-                    <button type="submit" className="btn btn-primary">
+                    <button
+                      type="submit"
+                      className="btn btn-primary"
+                      onClick={handleSubmitEdit}
+                    >
                       Save
                     </button>
                     <button

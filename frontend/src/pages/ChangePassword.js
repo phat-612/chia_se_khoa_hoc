@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import axios from "axios";
+import Cookie from "js-cookie";
 
 const ChangePassword = () => {
   const [inpChangePassword, setInpChangePassword] = useState({
@@ -6,11 +8,53 @@ const ChangePassword = () => {
     newPassword: "",
     rePassword: "",
   });
+  const [error, setError] = useState("");
+
   const handleChangeInput = (event) => {
     const { name, value } = event.target;
     setInpChangePassword({ ...inpChangePassword, [name]: value });
   };
-  const [error, setError] = useState("");
+  const validForm = () => {
+    if (
+      !inpChangePassword.oldPassword ||
+      !inpChangePassword.newPassword ||
+      !inpChangePassword.rePassword
+    ) {
+      setError("Vui lòng nhập đủ thông tin");
+      return false;
+    }
+    if (inpChangePassword.newPassword.length < 6) {
+      setError("Mật khẩu phải có ít nhất 6 ký tự");
+      return false;
+    }
+    if (inpChangePassword.newPassword !== inpChangePassword.rePassword) {
+      setError("Mật khẩu không khớp");
+      return false;
+    }
+    setError("");
+    return true;
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (!validForm()) return;
+    axios
+      .post(
+        `${process.env.REACT_APP_API_URL}/api/update-password`,
+        inpChangePassword,
+        {
+          headers: {
+            Authorization: `Bearer ${Cookie.get("accessToken")}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        setError("");
+      })
+      .catch((error) => {
+        setError(error.response.data.error);
+      });
+  };
   return (
     <div
       className="container"
@@ -57,9 +101,13 @@ const ChangePassword = () => {
           />
         </div>
         <div>
-          <p style={{ color: "red" }}></p>
+          <p style={{ color: "red" }}>{error}</p>
         </div>
-        <button type="submit" className="btn btn-primary w-100">
+        <button
+          type="submit"
+          className="btn btn-primary w-100"
+          onClick={handleSubmit}
+        >
           Lưu mật khẩu
         </button>
       </form>

@@ -39,6 +39,11 @@ const login = async (req, res) => {
     accessToken: token,
   });
 };
+const logout = (req, res) => {
+  res.json({
+    message: "User logged out successfully",
+  });
+};
 const updateInfoUser = async (req, res) => {
   const { email, fullname } = req.body;
   //   lấy từ middleware xác thực token
@@ -86,12 +91,16 @@ const getUserById = async (req, res) => {
   if (user.error) {
     return res.status(400).json({ error: "Get user by id failed" });
   }
-  res.json(user);
+  res.json({
+    user,
+    message: "Get user by id successfully",
+  });
 };
 
 export default {
   register,
   login,
+  logout,
   updateInfoUser,
   updatePassword,
   getAllUsers,

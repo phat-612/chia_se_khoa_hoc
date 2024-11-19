@@ -1,12 +1,25 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
+import Cookie from "js-cookie";
+import axios from "axios";
 
 const Header = ({ listNav }) => {
   const defaultNav = [];
   listNav = listNav || [];
-  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const { user, setUser, loading } = useContext(AuthContext);
 
+  const handleLogout = () => {
+    Cookie.remove("accessToken");
+    setUser({});
+    axios.get(`${process.env.REACT_APP_API_URL}/api/logout`);
+    navigate("/");
+  };
+
+  if (loading) {
+    return <div></div>; // Hiển thị màn hình chờ
+  }
   return (
     <header className="p-3 mb-3 border-bottom">
       <div className="container">
@@ -34,7 +47,6 @@ const Header = ({ listNav }) => {
               aria-label="Search"
             />
           </form>
-          {console.log(!!user.id)}
           {user.id ? (
             <div className="dropdown text-end">
               <Link
@@ -44,15 +56,20 @@ const Header = ({ listNav }) => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Xin Chào, Cam Đại Hưng
+                Xin Chào, {user.fullname || "Lỗi gòi"}
               </Link>
               <ul
                 className="dropdown-menu text-small"
                 aria-labelledby="dropdownUser1"
               >
                 <li>
-                  <Link className="dropdown-item" to="#">
+                  <Link className="dropdown-item" to="/me">
                     Trang Cá Nhân
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="/me/change-password">
+                    Đổi Mật Khẩu
                   </Link>
                 </li>
                 <li>
@@ -60,18 +77,14 @@ const Header = ({ listNav }) => {
                     Khóa Học Của Tôi
                   </Link>
                 </li>
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Đổi Mật Khẩu
-                  </Link>
-                </li>
+
                 <li>
                   <hr className="dropdown-divider" />
                 </li>
                 <li>
-                  <Link className="dropdown-item" to="#">
+                  <button className="dropdown-item" onClick={handleLogout}>
                     Đăng Xuất
-                  </Link>
+                  </button>
                 </li>
               </ul>
             </div>
