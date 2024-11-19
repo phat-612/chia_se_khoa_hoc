@@ -14,4 +14,7 @@ adminRouter.get("/detailCourse/:id", AdminController.getDetailCourse);
 adminRouter.get("/editCourse/:id", AdminController.getEditCourse);
 adminRouter.get("/addCourse", AdminController.getAddCourse);
 
+// USER
+adminRouter.get("/user", AdminController.getUserPage);
+
 export default adminRouter;

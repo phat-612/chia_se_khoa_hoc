@@ -2,7 +2,11 @@
   <h2 class="text-center mb-4">Chi Tiết Khóa Học</h2>
   <div class="row">
     <div class="col-md-6">
-      <img src="https://via.placeholder.com/300x200" alt="Thumbnail" class="img-fluid" />
+      <img
+        src="<%= data.course.thumbnail_url %>"
+        alt="Thumbnail"
+        class="img-fluid w-50"
+      />
     </div>
     <div class="col-md-6">
       <h3><%= data.course.title %></h3>
@@ -11,7 +15,9 @@
       <p><strong>Ngày Tạo:</strong> <%= data.course.created_at %></p>
       <p>
         <strong>URL Khóa Học:</strong>
-        <a href="<%= data.course.course_url %>" target="_blank">Truy cập khóa học</a>
+        <a href="<%= data.course.course_url %>" target="_blank"
+          >Truy cập khóa học</a
+        >
       </p>
     </div>
   </div>

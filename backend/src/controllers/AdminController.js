@@ -1,5 +1,6 @@
 import AdminModel from "../services/AdminModel";
 import CategoryModel from "../services/CategoryModel";
+import UserModel from "../services/UserModel";
 
 const getCoursesPage = async (req, res) => {
   res.render("hello");
@@ -19,7 +20,6 @@ const getCategoryPage = async (req, res) => {
 };
 
 // COURSES
-
 const getCoursePage = async (req, res) => {
   const courses = await AdminModel.getCourses();
   res.render("main", {
@@ -65,6 +65,17 @@ const getEditCourse = async (req, res) => {
   });
 };
 
+// USER
+const getUserPage = async (req, res) => {
+  const users = await UserModel.getAllUsers();
+  res.render("main", {
+    data: {
+      title: "User",
+      page: "users/listUser",
+      users,
+    },
+  });
+};
 export default {
   getCoursesPage,
   getCategoryPage,
@@ -72,4 +83,5 @@ export default {
   getDetailCourse,
   getEditCourse,
   getAddCourse,
+  getUserPage,
 };

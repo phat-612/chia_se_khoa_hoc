@@ -1,22 +1,44 @@
 <div class="container mt-5">
   <h2 class="text-center mb-4">Thêm Khóa Học Mới</h2>
-  <form action="/courses/create" method="POST">
+  <form action="/api/addCourses" method="POST">
     <div class="row">
       <div class="col-md-6">
         <div class="mb-3">
           <label for="thumbnail" class="form-label">Hình Ảnh</label>
-          <input type="text" class="form-control" id="thumbnail" name="thumbnail_url" placeholder="URL hình ảnh" />
+          <input
+            type="text"
+            class="form-control"
+            id="thumbnail"
+            name="thumbnail_url"
+            placeholder="URL hình ảnh"
+          />
         </div>
-        <img src="https://via.placeholder.com/300x200" alt="Thumbnail Preview" class="img-fluid" />
+        <img
+          src="https://via.placeholder.com/300x200"
+          alt="Thumbnail Preview"
+          class="img-fluid"
+        />
       </div>
       <div class="col-md-6">
         <div class="mb-3">
           <label for="title" class="form-label">Tên Khóa Học</label>
-          <input type="text" class="form-control" id="title" name="title" placeholder="Nhập tên khóa học" />
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            name="title"
+            placeholder="Nhập tên khóa học"
+          />
         </div>
         <div class="mb-3">
           <label for="description" class="form-label">Mô Tả</label>
-          <textarea class="form-control" id="description" name="description" rows="3" placeholder="Nhập mô tả khóa học"></textarea>
+          <textarea
+            class="form-control"
+            id="description"
+            name="description"
+            rows="3"
+            placeholder="Nhập mô tả khóa học"
+          ></textarea>
         </div>
         <div class="mb-3">
           <label for="category_id" class="form-label">Danh Mục</label>
@@ -29,7 +51,13 @@
         </div>
         <div class="mb-3">
           <label for="course_url" class="form-label">URL Khóa Học</label>
-          <input type="text" class="form-control" id="course_url" name="course_url" placeholder="Nhập URL khóa học" />
+          <input
+            type="text"
+            class="form-control"
+            id="course_url"
+            name="course_url"
+            placeholder="Nhập URL khóa học"
+          />
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@ import { compareSync, hashSync } from "bcrypt";
 import jwt from "jsonwebtoken";
 import UserModel from "../services/UserModel";
 import CategoryModel from "../services/CategoryModel";
-
+import CourseModel from "../services/CourseModel";
 const register = async (req, res) => {
   const { username, password, email, fullname } = req.body;
   const hashPassword = hashSync(password, 10);
@@ -31,6 +31,9 @@ const login = async (req, res) => {
       expiresIn: "1h",
     }
   );
+  // const { password, ...userWithoutPassword } = user;
+  req.session.user = user;
+
   return res.status(200).json({
     message: "User logged in successfully",
     user: {
@@ -41,6 +44,7 @@ const login = async (req, res) => {
   });
 };
 const logout = (req, res) => {
+  req.session.destroy();
   res.json({
     message: "User logged out successfully",
   });
@@ -156,10 +160,9 @@ const removeCategory = async (req, res) => {
   }
 };
 // course
-
 const addCourse = async (req, res) => {
-  const { newCourse } = req.body;
-  const course = await CategoryModel.addCourse(newCourse);
+  const course = await CourseModel.addCourse(req.body);
+  return res.redirect("/admin/course");
 };
 export default {
   register,
