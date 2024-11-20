@@ -1,17 +1,19 @@
 import express from "express";
 
+import { upload } from "../middlewares/uploadImage";
 import ApiController from "../controllers/ApiController";
-
 import auth from "../middlewares/auth";
 
 const apiRouter = express.Router();
 
+// USER
 apiRouter.post("/register", ApiController.register);
 apiRouter.post("/login", ApiController.login);
 apiRouter.get("/logout", ApiController.logout);
 apiRouter.post(
   "/update-info-user",
   auth.authToken,
+  upload.single("avatar"),
   ApiController.updateInfoUser
 );
 apiRouter.post(
@@ -19,6 +21,7 @@ apiRouter.post(
   auth.authToken,
   ApiController.updatePassword
 );
+apiRouter.post("/update-role", ApiController.updateRole);
 apiRouter.get("/get-all-users", auth.authToken, ApiController.getAllUsers);
 apiRouter.get("/get-info-user", auth.authToken, ApiController.getUserById);
 

@@ -32,8 +32,11 @@ const login = async (req, res) => {
       expiresIn: "1h",
     }
   );
-  // const { password, ...userWithoutPassword } = user;
-  req.session.user = user;
+  req.session.user = {
+    ...user,
+    password: undefined,
+  };
+  req.session.isLogin = true;
 
   return res.status(200).json({
     message: "User logged in successfully",
@@ -51,11 +54,16 @@ const logout = (req, res) => {
   });
 };
 const updateInfoUser = async (req, res) => {
-  const { email, fullname } = req.body;
+  const { email, fullname, oldAvatar } = req.body;
   //   lấy từ middleware xác thực token
   const { id } = req.user;
-  const user = await UserModel.updateInfoUser(email, fullname, id);
+  let pathImg = oldAvatar;
+  if (req.file) {
+    pathImg = req.file.path;
+  }
+  const user = await UserModel.updateInfoUser(pathImg, email, fullname, id);
   if (user.error) {
+    console.log(user.error);
     return res.status(400).json({ error: "Update user failed" });
   }
   res.json({
@@ -81,6 +89,19 @@ const updatePassword = async (req, res) => {
   }
   res.json({
     message: "Password updated successfully",
+  });
+};
+const updateRole = async (req, res) => {
+  const { id, role } = req.body;
+  if (role !== "admin" && role !== "user") {
+    return res.status(400).json({ error: "Role is invalid" });
+  }
+  const user = await UserModel.updateRole(role, id);
+  if (user.error) {
+    return res.status(400).json({ error: "Update role failed" });
+  }
+  res.json({
+    message: "Update role successfully",
   });
 };
 const getAllUsers = async (req, res) => {
@@ -181,6 +202,7 @@ export default {
   logout,
   updateInfoUser,
   updatePassword,
+  updateRole,
   getAllUsers,
   getUserById,
 

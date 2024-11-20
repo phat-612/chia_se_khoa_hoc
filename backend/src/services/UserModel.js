@@ -19,9 +19,10 @@ const addUser = async (username, password, email, fullname) => {
     return { error: error.message };
   }
 };
-const updateInfoUser = async (email, fullname, id) => {
-  const sql = "UPDATE users SET email = ?, fullname = ? WHERE id = ?";
-  const values = [email, fullname, id];
+const updateInfoUser = async (avatar, email, fullname, id) => {
+  const sql =
+    "UPDATE users SET avatar = ?, email = ?, fullname = ? WHERE id = ?";
+  const values = [avatar, email, fullname, id];
   try {
     const [row] = await pool.execute(sql, values);
     return row;
@@ -74,12 +75,47 @@ const getAllUsers = async () => {
     return { error: error.message };
   }
 };
+const getUsersWithPagination = async (searchTerm, limit, offset) => {
+  const sql =
+    "SELECT * FROM users WHERE fullname LIKE ? OR email LIKE ? LIMIT ? OFFSET ?";
+  const values = [`%${searchTerm}%`, `%${searchTerm}%`, limit, offset];
+  try {
+    const [rows] = await pool.execute(sql, values);
+    return rows;
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+const countUsers = async (searchTerm) => {
+  const sql =
+    "SELECT COUNT(*) as total FROM users WHERE fullname LIKE ? OR email LIKE ?";
+  const values = [`%${searchTerm}%`, `%${searchTerm}%`];
+  try {
+    const [rows] = await pool.execute(sql, values);
+    return rows[0].total;
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+const updateRole = async (role, id) => {
+  const sql = "UPDATE users SET role = ? WHERE id = ?";
+  const values = [role, id];
+  try {
+    const [row] = await pool.execute(sql, values);
+    return row;
+  } catch (error) {
+    return { error: error.message };
+  }
+};
 
 export default {
   addUser,
   updateInfoUser,
   updatePassword,
+  updateRole,
   getUserById,
   getUserByUserName,
+  getUsersWithPagination,
+  countUsers,
   getAllUsers,
 };

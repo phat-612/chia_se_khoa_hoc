@@ -1,18 +1,16 @@
-// uploadMiddleware.js
 import multer from "multer";
-import path from "path";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import dotenv from "dotenv/config";
-const { v2: cloudinary } = require("cloudinary");
+import { v2 as cloudinary } from "cloudinary";
 
-const configCloudinary = cloudinary.config({
+cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
   api_secret: process.env.API_SECRET,
 });
 
 const storage = new CloudinaryStorage({
-  cloudinary: configCloudinary,
+  cloudinary: cloudinary,
   params: {
     folder: "uploads",
     format: async (req, file) => {
@@ -23,9 +21,12 @@ const storage = new CloudinaryStorage({
       `${Date.now()}-${file.originalname.split(".")[0]}`,
   },
 });
+
 const upload = multer({ storage: storage });
+
 const removeImgCloudinary = (fileName) => {
-  public_id = `uploads/${fileName.split(".")[0]}`;
+  const public_id = `uploads/${fileName.split(".")[0]}`;
   cloudinary.uploader.destroy(public_id, (err, result) => {});
 };
+
 export { upload, removeImgCloudinary };

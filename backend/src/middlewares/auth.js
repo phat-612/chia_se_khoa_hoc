@@ -16,4 +16,30 @@ const authToken = (req, res, next) => {
     });
   }
 };
-export default { authToken };
+
+const isLogin = (req, res, next) => {
+  if (req.session.isLogin) {
+    next();
+  } else {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+};
+const isAdmin = (req, res, next) => {
+  isLogin(req, res, () => {
+    if (req.session.user.role === "admin") {
+      next();
+    } else {
+      return res.status(403).json({ error: "Forbidden" });
+    }
+  });
+};
+const isUser = (req, res, next) => {
+  isLogin(req, res, () => {
+    if (req.session.user.role === "user") {
+      next();
+    } else {
+      return res.status(403).json({ error: "Forbidden" });
+    }
+  });
+};
+export default { authToken, isLogin, isAdmin, isUser };
