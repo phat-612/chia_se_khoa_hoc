@@ -8,7 +8,7 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import ChangePassword from "./pages/ChangePassword";
 import MyCourses from "./pages/MyCourses";
-
+import Course from "./pages/Course";
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -21,6 +21,16 @@ const routes = createBrowserRouter([
       {
         path: "register",
         element: <Register />,
+      },
+    ],
+  },
+  {
+    path: "/courses",
+    element: <MainLayout />,
+    children: [
+      {
+        path: "",
+        element: <Course />,
       },
     ],
   },
