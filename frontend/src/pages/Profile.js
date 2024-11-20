@@ -4,7 +4,7 @@ import Cookie from "js-cookie";
 import { AuthContext } from "../contexts/AuthContext";
 
 const Profile = () => {
-  const { user } = useContext(AuthContext);
+  const { user, refreshUser } = useContext(AuthContext);
   const [isEdit, setIsEdit] = useState(false);
   const [inpProfile, setInpProfile] = useState({
     fullname: user.fullname,
@@ -62,7 +62,8 @@ const Profile = () => {
     const formData = new FormData();
     formData.append("fullname", inpProfile.fullname);
     formData.append("email", inpProfile.email);
-    // formData.append("avatar", inpProfile.avatar);
+    formData.append("avatar", inpProfile.avatar);
+    formData.append("oldAvatar", user.avatar);
     axios
       .post(`${process.env.REACT_APP_API_URL}/api/update-info-user`, formData, {
         headers: {
@@ -72,6 +73,7 @@ const Profile = () => {
       })
       .then((response) => {
         setError("");
+        refreshUser();
         setIsEdit(false);
       })
       .catch((error) => {
@@ -90,6 +92,8 @@ const Profile = () => {
                   src={user.avatar || "https://via.placeholder.com/150"}
                   className="rounded-circle mb-3"
                   alt="Avatar"
+                  width="150"
+                  height="150"
                 />
                 <h5 className="card-title">{user.fullname}</h5>
                 <p className="card-text">{user.email}</p>

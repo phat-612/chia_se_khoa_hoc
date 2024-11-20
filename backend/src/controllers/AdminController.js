@@ -91,12 +91,22 @@ const getEditCourse = async (req, res) => {
 
 // USER
 const getUserPage = async (req, res) => {
-  const users = await UserModel.getAllUsers();
+  const { page = 1, search = "" } = req.query;
+  const limit = 10;
+  const offset = (page - 1) * limit;
+
+  const users = await UserModel.getUsersWithPagination(search, limit, offset);
+  const totalUsers = await UserModel.countUsers(search);
+  const totalPages = Math.ceil(totalUsers / limit);
+
   res.render("main", {
     data: {
       title: "User",
       page: "users/listUser",
       users,
+      currentPage: parseInt(page),
+      totalPages,
+      search,
     },
   });
 };
