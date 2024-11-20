@@ -18,16 +18,41 @@ const getCategoryPage = async (req, res) => {
 
 // COURSES
 const getCoursePage = async (req, res) => {
-  const courses = await CourseModel.getCourses();
+  const { category_id, page = 1 } = req.query; // Lấy category_id và page từ query string (mặc định là trang 1)
+  const limit = 5; // Số khóa học mỗi trang
+  const offset = (page - 1) * limit;
+  // Lấy danh sách danh mục
+  const categories = await CourseModel.getCategories();
+  // Lấy danh sách khóa học theo category_id và phân trang
+  let courses;
+  if (category_id) {
+    courses = await CourseModel.getCoursesByCategory(
+      category_id,
+      limit,
+      offset
+    );
+  } else {
+    courses = await CourseModel.getCourses(limit, offset); // Lấy tất cả khóa học nếu không có lọc
+  }
+
+  // Lấy tổng số khóa học để tính số trang
+  const totalCourses = await CourseModel.getTotalCourses(category_id);
+  const totalPages = Math.ceil(totalCourses / limit); // Tính tổng số trang
+
   res.render("main", {
     data: {
-      title: "Course",
+      title: "Danh Sách Khóa Học",
       header: "partials/header",
       page: "courses/course",
-      courses: courses,
+      courses,
+      categories,
+      selectedCategory: category_id,
+      currentPage: parseInt(page),
+      totalPages,
     },
   });
 };
+
 const getAddCourse = async (req, res) => {
   const categories = await CourseModel.getCategories();
   res.render("main", {
@@ -52,12 +77,14 @@ const getDetailCourse = async (req, res) => {
 };
 const getEditCourse = async (req, res) => {
   const course = await CourseModel.getDetailCourse(req.params.id);
+  const categories = await CourseModel.getCategories();
   res.render("main", {
     data: {
       title: "detailCourse",
       header: "partials/header",
       page: "courses/editCourse",
       course: course,
+      categories,
     },
   });
 };

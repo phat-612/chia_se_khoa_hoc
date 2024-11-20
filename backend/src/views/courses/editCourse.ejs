@@ -43,16 +43,18 @@
             <%= data.course.description %></textarea
           >
         </div>
-        <div class="mb-3">
-          <label for="category_id" class="form-label">Danh Mục</label>
-          <input
-            type="text"
-            class="form-control"
-            id="category_id"
-            name="category_id"
-            value="<%= data.course.category_id %>"
-          />
-        </div>
+      <div class="mb-3">
+        <label for="category_id" class="form-label">Danh Mục</label>
+        <select class="form-select" id="category_id" name="category_id">
+          <option value="" disabled>Chọn danh mục</option>
+          <% data.categories.forEach(function(category) { %>
+            <option value="<%= category.id %>" <%= category.id === data.course.category_id ? 'selected' : '' %>>
+              <%= category.name %>
+            </option>
+          <% }) %>
+        </select>
+      </div>
+
 
         <div class="mb-3">
           <label for="course_url" class="form-label">URL Khóa Học</label>

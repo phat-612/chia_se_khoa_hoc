@@ -42,13 +42,14 @@
         </div>
         <div class="mb-3">
           <label for="category_id" class="form-label">Danh Mục</label>
-          <% data.categories.forEach(function(category,index){ %>
           <select class="form-select" id="category_id" name="category_id">
             <option value="" disabled selected>Chọn danh mục</option>
+            <% data.categories.forEach(function(category) { %>
             <option value="<%= category.id %>"><%= category.name %></option>
+            <% }) %>
           </select>
-          <% }) %>
         </div>
+
         <div class="mb-3">
           <label for="course_url" class="form-label">URL Khóa Học</label>
           <input

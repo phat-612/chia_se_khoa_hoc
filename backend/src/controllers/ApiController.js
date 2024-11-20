@@ -163,7 +163,7 @@ const removeCategory = async (req, res) => {
 // course
 const addCourse = async (req, res) => {
   await CourseModel.addCourse(req.body);
-  return res.redirect("/admin/course");
+  return res.redirect("back");
 };
 const removeCourse = async (req, res) => {
   const { idCourse } = req.params;
