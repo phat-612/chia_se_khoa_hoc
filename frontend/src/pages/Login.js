@@ -12,7 +12,11 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { user, setUser, refreshUser } = useContext(AuthContext);
-
+  useEffect(() => {
+    if (user.id) {
+      navigate("/me"); // Điều hướng đến trang cá nhân nếu đã đăng nhập
+    }
+  }, [user, navigate]);
   const handleChangeInput = (event) => {
     const { name, value } = event.target;
     setInpUser({ ...inpUser, [name]: value });
@@ -43,11 +47,7 @@ const Login = () => {
         setError(error.response.data.error);
       });
   };
-  useEffect(() => {
-    if (user.id) {
-      navigate("/me");
-    }
-  }, []);
+
   return (
     <div
       className="container"

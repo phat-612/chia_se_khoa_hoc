@@ -27,10 +27,10 @@ const routes = createBrowserRouter([
   {
     path: "/me",
     element: (
-      // <PrivateRoute>
-      //   <MeLayout />
-      // </PrivateRoute>
-      <MeLayout />
+      <PrivateRoute>
+        <MeLayout />
+      </PrivateRoute>
+      // <MeLayout />
     ),
     children: [
       {
