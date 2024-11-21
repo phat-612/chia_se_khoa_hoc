@@ -10,7 +10,11 @@ const initWebRouter = (app) => {
   app.use(globalVariable);
 
   app.use("/api", apiRouter);
-  app.use("/admin", auth.isAdmin, adminRouter);
+
+  // cam hung comment lai de code
+  // app.use("/admin", auth.isAdmin, adminRouter);
+
+  app.use("/admin", adminRouter);
 };
 
 export default initWebRouter;

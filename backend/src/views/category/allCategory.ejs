@@ -1,9 +1,18 @@
 <div class="container">
-  <div class="d-flex justify-content-end">
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ThemDanhMucModal">
-      Thêm Danh Mục
-    </button>
+  <div class="d-flex justify-content-between align-items-center row my-3">
+    <div class="col-3">
+      <form action="" method="post" class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Tìm kiếm..." aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Tìm</button>
+      </form>
+    </div>
+    <div class="col-3 text-end">
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ThemDanhMucModal">
+        Thêm Danh Mục
+      </button>
+    </div>
   </div>
+
   <table class="table table-striped table-hover">
     <thead>
       <tr>
@@ -30,6 +39,35 @@
 
     </tbody>
   </table>
+
+
+  <div class="d-flex justify-content-center">
+    <nav>
+      <ul class="pagination">
+        <% if (data.currentPage > 1) { %>
+        <li class="page-item">
+          <a class="page-link" href="/admin/category?page=<%= data.currentPage - 1 %>">Previous</a>
+        </li>
+        <% } else { %>
+        <li class="page-item disabled"><span class="page-link">Previous</span></li>
+        <% } %>
+
+        <% for (let i = 1; i <= data.totalPages; i++) { %>
+        <li class="page-item <%= i === data.currentPage ? 'active' : '' %>">
+          <a class="page-link" href="/admin/category?page=<%= i %>"><%= i %></a>
+        </li>
+        <% } %>
+
+        <% if (data.currentPage < data.totalPages) { %>
+        <li class="page-item">
+          <a class="page-link" href="/admin/category?page=<%= data.currentPage + 1 %>">Next</a>
+        </li>
+        <% } else { %>
+        <li class="page-item disabled"><span class="page-link">Next</span></li>
+        <% } %>
+      </ul>
+    </nav>
+  </div>
 </div>
 
 <!-- Modal Thêm Danh Mục -->

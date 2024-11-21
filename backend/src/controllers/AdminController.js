@@ -5,13 +5,29 @@ import UserModel from "../services/UserModel";
 
 // CATEGORY
 const getCategoryPage = async (req, res) => {
-  const categories = await CategoryModel.getAllCategory();
+  const { search, page = 1 } = req.query;
+  const limit = 7;
+  const offset = (page - 1) * limit;
+  let categories;
+  if (search) {
+    categories = await CategoryModel.getAllCategoryBySearch(
+      limit,
+      offset,
+      search
+    );
+  } else {
+    categories = await CategoryModel.getAllCategory(limit, offset);
+  }
+  const total = await CategoryModel.getTotal();
+  const totalPages = Math.ceil(total[0].total / limit);
   res.render("main", {
     data: {
       title: "Courses",
       header: "partials/header",
       page: "category/allCategory",
       categories,
+      currentPage: parseInt(page),
+      totalPages,
     },
   });
 };

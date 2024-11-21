@@ -1,8 +1,18 @@
 import pool from "../configs/db";
 
-const getAllCategory = async () => {
-  const sql = "SELECT * FROM `categories`";
-  const [row] = await pool.execute(sql);
+const getAllCategory = async (limit, offset) => {
+  limit = limit || 7;
+  offset = offset || 0;
+  const sql = "SELECT * FROM `categories` LIMIT ? OFFSET ? ";
+  const [row] = await pool.execute(sql, [limit, offset]);
+  return row;
+};
+
+const getAllCategoryBySearch = async (limit, offset, search) => {
+  limit = limit || 7;
+  offset = offset || 0;
+  const sql = "SELECT * FROM `categories` WHERE name = ? LIMIT ? OFFSET ? ";
+  const [row] = await pool.execute(sql, [search, limit, offset]);
   return row;
 };
 
@@ -45,10 +55,17 @@ const getAllIdCategoryInCourses = async () => {
   return row;
 };
 
+const getTotal = async () => {
+  const sql = "SELECT COUNT(*) AS total FROM categories";
+  const total = await pool.execute(sql);
+  return total[0];
+};
+
 export default {
   getAllCategory,
   addCategory,
   updateCategory,
   removeCategory,
   getAllIdCategoryInCourses,
+  getTotal,
 };
