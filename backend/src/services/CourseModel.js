@@ -132,6 +132,13 @@ const cancelCourse = async (id) => {
   const sql = "DELETE FROM enrollments where id = ?";
   await pool.query(sql, [id]);
 };
+
+const cancelCourseByUserIdCoursesId = async (userId, coursesId) => {
+  const sql = "DELETE FROM enrollments where user_id = ? AND course_id = ?";
+  const values = [userId, coursesId];
+  await pool.execute(sql, values);
+};
+
 const updateCourse = async (id, data) => {
   const updatedAt = new Date(); // Thời gian cập nhật
   const sql =
@@ -228,4 +235,5 @@ export default {
   cancelCourse,
   registerCourses,
   checkRegisterCourses,
+  cancelCourseByUserIdCoursesId,
 };

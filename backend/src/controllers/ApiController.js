@@ -215,7 +215,13 @@ const registerCourses = async (req, res) => {
 const cancelCourse = async (req, res) => {
   const { enrollment_id } = req.params;
   await CourseModel.cancelCourse(enrollment_id);
-  res.json({ message: "xoa thanh cong" });
+  res.json({ message: "huy dang ky khoa hoc thanh cong" });
+};
+
+const cancelCourseByUserIdCoursesId = async (req, res) => {
+  const { userId, coursesId } = req.body;
+  await CourseModel.cancelCourseByUserIdCoursesId(userId, coursesId);
+  res.json({ message: "huy dang ky khoa hoc thanh cong" });
 };
 
 const addCourse = async (req, res) => {
@@ -280,4 +286,5 @@ export default {
   cancelCourse,
   registerCourses,
   checkRegisterCourses,
+  cancelCourseByUserIdCoursesId,
 };

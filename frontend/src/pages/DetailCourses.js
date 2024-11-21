@@ -11,8 +11,6 @@ const DetailCourses = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [isRegistered, setIsRegistered] = useState(false); // Trạng thái đã đăng ký
-  const [courses, setCourses] = useState([]); // Danh sách khóa học của user
-
   // Kiểm tra trạng thái đăng ký và tải danh sách khóa học
   useEffect(() => {
     const fetchData = async () => {
@@ -21,20 +19,12 @@ const DetailCourses = () => {
           navigate("/login"); // Chuyển hướng nếu chưa đăng nhập
           return;
         }
-
         // Gọi API kiểm tra đăng ký
         const checkResponse = await axios.post(
           `${process.env.REACT_APP_API_URL}/api/checkRegisterCourses`,
           { userId: user.id, coursesId: idCourses }
         );
         setIsRegistered(checkResponse.data.isRegistered);
-
-        // Gọi API lấy danh sách khóa học
-        const coursesResponse = await axios.post(
-          `${process.env.REACT_APP_API_URL}/api/getMyCourses`,
-          { userId: user.id }
-        );
-        setCourses(coursesResponse.data); // Cập nhật danh sách khóa học
       } catch (err) {
         setError("Đã xảy ra lỗi khi tải dữ liệu.");
         console.error(err);
@@ -63,7 +53,7 @@ const DetailCourses = () => {
   const cancelRegistration = async () => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/cancelCourse`,
+        `${process.env.REACT_APP_API_URL}/api/cancelCourseByUserIdCoursesId`,
         { userId: user.id, coursesId: idCourses }
       );
       setIsRegistered(false); // Đánh dấu trạng thái chưa đăng ký

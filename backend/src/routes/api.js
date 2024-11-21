@@ -41,5 +41,9 @@ apiRouter.get("/courses", ApiController.getAllCoures);
 apiRouter.post("/checkRegisterCourses", ApiController.checkRegisterCourses);
 apiRouter.post("/registerCourses", ApiController.registerCourses);
 apiRouter.post("/cancelCourse/:enrollment_id", ApiController.cancelCourse);
+apiRouter.post(
+  "/cancelCourseByUserIdCoursesId",
+  ApiController.cancelCourseByUserIdCoursesId
+);
 
 export default apiRouter;

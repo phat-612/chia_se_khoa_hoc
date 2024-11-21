@@ -35,7 +35,7 @@ const CourseList = () => {
 
   useEffect(() => {
     fetchCourses(currentPage, searchQuery);
-    console.log(searchQuery);
+    // console.log(searchQuery);
   }, [currentPage, searchQuery]);
 
   const handleSearch = (query) => {
