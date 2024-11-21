@@ -110,6 +110,15 @@ const getUserPage = async (req, res) => {
     },
   });
 };
+
+// login
+const getLoginPage = async (req, res) => {
+  res.render("login", {
+    data: {
+      title: "Login",
+    },
+  });
+};
 export default {
   getCategoryPage,
   getCoursePage,
@@ -117,4 +126,5 @@ export default {
   getEditCourse,
   getAddCourse,
   getUserPage,
+  getLoginPage,
 };

@@ -7,7 +7,9 @@ const MainLayout = () => {
   return (
     <div>
       <Header />
-      <Outlet />
+      <div style={{ marginTop: "100px" }}>
+        <Outlet />
+      </div>
       <Footer />
     </div>
   );

@@ -9,7 +9,6 @@ const Header = ({ listNav }) => {
   listNav = listNav || [];
   const navigate = useNavigate();
   const { user, setUser, loading } = useContext(AuthContext);
-
   const handleLogout = () => {
     Cookie.remove("accessToken");
     setUser({});
@@ -18,19 +17,27 @@ const Header = ({ listNav }) => {
   };
 
   if (loading) {
-    return <div></div>; // Hiển thị màn hình chờ
+    return <div>Không có header</div>; // Hiển thị màn hình chờ
   }
   return (
-    <header className="p-3 mb-3 border-bottom">
+    <header
+      className="p-3 mb-5 bg-light border-bottom position-fixed top-0 start-0 w-100"
+      style={{ zIndex: 999 }}
+    >
       <div className="container">
         <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
           <Link
             to="/"
-            className="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none"
+            className="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none "
           >
-            Trang chủ
+            Trang Chủ
           </Link>
-
+          <Link
+            to="/courses"
+            className="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none mx-3"
+          >
+            Khóa Học
+          </Link>
           <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
             {listNav.map((nav) => (
               <Link className="nav-link px-2 link-dark text-decoration-none">

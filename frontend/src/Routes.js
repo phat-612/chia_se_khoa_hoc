@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import ChangePassword from "./pages/ChangePassword";
 import MyCourses from "./pages/MyCourses";
 import Course from "./pages/Course";
+import DetailCourses from "./pages/DetailCourses";
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -31,6 +32,10 @@ const routes = createBrowserRouter([
       {
         path: "",
         element: <Course />,
+      },
+      {
+        path: ":idCourses",
+        element: <DetailCourses />,
       },
     ],
   },

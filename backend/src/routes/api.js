@@ -21,6 +21,7 @@ apiRouter.post(
   auth.authToken,
   ApiController.updatePassword
 );
+// bên dưới là admin
 apiRouter.post("/update-role", ApiController.updateRole);
 apiRouter.get("/get-all-users", auth.authToken, ApiController.getAllUsers);
 apiRouter.get("/get-info-user", auth.authToken, ApiController.getUserById);
@@ -30,7 +31,15 @@ apiRouter.post("/addCategory", ApiController.addCategory);
 apiRouter.post("/updateCategory", ApiController.updateCategory);
 apiRouter.post("/removeCategory/:idCategory", ApiController.removeCategory);
 // course
+apiRouter.post("/getMyCourses", ApiController.getMyCourses);
 apiRouter.post("/addCourses", ApiController.addCourse);
 apiRouter.post("/update/:idCourse", ApiController.updateCourse);
 apiRouter.get("/removeCourse/:idCourse", ApiController.removeCourse);
+apiRouter.get("/courses", ApiController.getAllCoures);
+
+// ĐĂNG KÝ VÀ HỦY KHÓA HỌC
+apiRouter.post("/checkRegisterCourses", ApiController.checkRegisterCourses);
+apiRouter.post("/registerCourses", ApiController.registerCourses);
+apiRouter.post("/cancelCourse/:enrollment_id", ApiController.cancelCourse);
+
 export default apiRouter;

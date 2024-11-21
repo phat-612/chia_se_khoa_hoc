@@ -182,9 +182,45 @@ const removeCategory = async (req, res) => {
   }
 };
 // course
+const getMyCourses = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    if (!userId) {
+      return res.status(400).json({ message: "Thiếu userId." });
+    }
+    const courses = await CourseModel.getCoursesByUserId(userId);
+    res.status(200).json(courses);
+  } catch (error) {
+    console.error("Lỗi khi lấy danh sách khóa học:", error);
+    res.status(500).json({ message: "Lỗi máy chủ." });
+  }
+};
+
+const checkRegisterCourses = async (req, res) => {
+  const { userId, coursesId } = req.body;
+  const result = await CourseModel.checkRegisterCourses(userId, coursesId);
+  if (result) {
+    return res.json({ isRegistered: true });
+  } else {
+    return res.json({ isRegistered: false });
+  }
+};
+
+const registerCourses = async (req, res) => {
+  const { userId, coursesId } = req.body;
+  const row = await CourseModel.registerCourses(userId, coursesId);
+  res.json({ message: "Dang ky khoa hoc thanh cong" });
+};
+
+const cancelCourse = async (req, res) => {
+  const { enrollment_id } = req.params;
+  await CourseModel.cancelCourse(enrollment_id);
+  res.json({ message: "xoa thanh cong" });
+};
+
 const addCourse = async (req, res) => {
   await CourseModel.addCourse(req.body);
-  return res.redirect("back");
+  return res.redirect("/admin/course");
 };
 const removeCourse = async (req, res) => {
   const { idCourse } = req.params;
@@ -196,6 +232,29 @@ const updateCourse = async (req, res) => {
   await CourseModel.updateCourse(idCourse, req.body);
   return res.redirect("/admin/course");
 };
+// lấy tất cả sản phẩm hiện ra giao diện
+const getAllCoures = async (req, res) => {
+  // Lấy limit và offset từ query params
+  const limit = parseInt(req.query.limit) || 6;
+  const offset = parseInt(req.query.offset) || 0;
+
+  const search = req.query.search || "";
+
+  try {
+    const { courses, total } = await CourseModel.getAllCoursesUser(
+      limit,
+      offset,
+      search
+    );
+
+    // Trả kết quả về cho frontend
+    return res.json({ courses, total });
+  } catch (error) {
+    console.error("Error fetching courses:", error);
+    return res.status(500).json({ error: "Đã xảy ra lỗi khi lấy dữ liệu" });
+  }
+};
+
 export default {
   register,
   login,
@@ -212,7 +271,13 @@ export default {
   updateCategory,
   removeCategory,
   // course
+  getMyCourses,
   addCourse,
   removeCourse,
   updateCourse,
+  getAllCoures,
+
+  cancelCourse,
+  registerCourses,
+  checkRegisterCourses,
 };

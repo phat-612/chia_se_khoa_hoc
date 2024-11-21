@@ -23,11 +23,11 @@ const Login = () => {
   };
   const validForm = () => {
     if (!inpUser.username || !inpUser.password) {
-      setError("Please enter all fields");
+      setError("Vui lòng nhập đầy đủ thông tin");
       return false;
     }
     if (inpUser.password.length < 6) {
-      setError("Password must be at least 6 characters");
+      setError("Mật khẩu phải có ít nhất 6 ký tự");
       return false;
     }
     setError("");

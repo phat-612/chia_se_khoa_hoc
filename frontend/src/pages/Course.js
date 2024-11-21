@@ -1,48 +1,78 @@
-// CourseList.js
-import React from "react";
+import React, { useState, useEffect } from "react";
+import SearchBar from "../components/SearchBar/SearchBar";
 import CourseCard from "../components/CourseCard/courseCard";
+import Pagination from "../components/Pagination/Pagination";
 
 const CourseList = () => {
-  // Dữ liệu mẫu cho các khóa học
-  const courses = [
-    {
-      id: 1,
-      title: "Khóa Học React Cơ Bản",
-      description: "Học cách xây dựng ứng dụng web với React.",
-      thumbnail_url: "https://via.placeholder.com/300x200",
-    },
-    {
-      id: 2,
-      title: "Khóa Học Node.js",
-      description: "Học cách xây dựng server với Node.js.",
-      thumbnail_url: "https://via.placeholder.com/300x200",
-    },
-    {
-      id: 3,
-      title: "Khóa Học JavaScript Nâng Cao",
-      description: "Nâng cao kỹ năng JavaScript với các kỹ thuật mới.",
-      thumbnail_url: "https://via.placeholder.com/300x200",
-    },
-    {
-      id: 4,
-      title: "Khóa Học Python Cơ Bản",
-      description: "Học lập trình cơ bản với Python.",
-      thumbnail_url: "https://via.placeholder.com/300x200",
-    },
-  ];
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 6;
+
+  const fetchCourses = async (page, search = "") => {
+    setLoading(true);
+    setError(null);
+    try {
+      const offset = (page - 1) * itemsPerPage;
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/courses?limit=${itemsPerPage}&offset=${offset}&search=${search}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch courses");
+      }
+      const data = await response.json();
+      setCourses(data.courses);
+      setTotalPages(Math.ceil(data.total / itemsPerPage));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCourses(currentPage, searchQuery);
+    console.log(searchQuery);
+  }, [currentPage, searchQuery]);
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    setCurrentPage(1); // Reset trang khi thay đổi từ khóa tìm kiếm
+  };
+
+  const handlePageChange = (page) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  if (loading) return <p>Đang tải dữ liệu...</p>;
+  if (error) return <p>Lỗi: {error}</p>;
 
   return (
     <div className="container mt-5">
-      <h2 className="text-center mb-4">Các khóa học chia sẽ</h2>
+      <h2 className="text-center mb-4">Các khóa học chia sẻ</h2>
+      <SearchBar onSearch={handleSearch} />
       <div className="row">
-        {/* Lặp qua các khóa học và hiển thị mỗi khóa học bằng CourseCard */}
-        {courses.map((course) => (
-          <div className="col-md-4 mb-4" key={course.id}>
-            <CourseCard course={course} />
-            {/* Sử dụng CourseCard và truyền props */}
-          </div>
-        ))}
+        {courses.length > 0 ? (
+          courses.map((course) => (
+            <div className="col-md-3 mb-3" key={course.id}>
+              <CourseCard course={course} />
+            </div>
+          ))
+        ) : (
+          <p>Không có khóa học nào để hiển thị.</p>
+        )}
       </div>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 };

@@ -3,13 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 
 const PrivateRoute = ({ children }) => {
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
   const navigate = useNavigate();
   useEffect(() => {
-    if (!user.id) {
+    if (!user.id && !loading) {
       navigate("/login");
     }
   });
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return children;
 };
 

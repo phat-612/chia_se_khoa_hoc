@@ -1,5 +1,6 @@
 // CourseCard.js
 import React from "react";
+import { Link } from "react-router-dom";
 
 const CourseCard = ({ course }) => {
   return (
@@ -20,9 +21,9 @@ const CourseCard = ({ course }) => {
 
         {/* Button "Xem Khóa Học" */}
         <div className="mt-auto">
-          <a href={`/courses/${course.id}`} className="btn btn-primary w-100">
+          <Link to={`/courses/${course.id}`} className="btn btn-primary w-100">
             Xem Khóa Học
-          </a>
+          </Link>
         </div>
       </div>
     </div>

@@ -8,26 +8,26 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const refreshUser = () => {
     const token = Cookie.get("accessToken");
-    if (token) {
-      axios
-        .get(`${process.env.REACT_APP_API_URL}/api/get-info-user`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          setUser(response.data.user || {});
-          setLoading(false);
-        })
-        .catch((error) => {
-          Cookie.remove("accessToken");
-          setLoading(false);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+    if (!token) {
+      setLoading(false);
+      return;
     }
-    setLoading(false);
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/api/get-info-user`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setUser(response.data.user || {});
+      })
+      .catch((error) => {
+        Cookie.remove("accessToken");
+        setLoading(false);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
   useEffect(() => {
     refreshUser();

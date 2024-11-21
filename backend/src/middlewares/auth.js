@@ -18,18 +18,25 @@ const authToken = (req, res, next) => {
 };
 
 const isLogin = (req, res, next) => {
+  console.log(req.path);
   if (req.session.isLogin) {
     next();
   } else {
-    return res.status(401).json({ error: "Unauthorized" });
+    if (req.path === "/login") {
+      next();
+    }
+    return res.redirect("/admin/login");
   }
 };
 const isAdmin = (req, res, next) => {
   isLogin(req, res, () => {
-    if (req.session.user.role === "admin") {
+    if (req.path === "/login") {
+      return next();
+    }
+    if (req.session.user.role === "admin" || req.path === "/login") {
       next();
     } else {
-      return res.status(403).json({ error: "Forbidden" });
+      return res.redirect("/admin/login");
     }
   });
 };
@@ -38,7 +45,7 @@ const isUser = (req, res, next) => {
     if (req.session.user.role === "user") {
       next();
     } else {
-      return res.status(403).json({ error: "Forbidden" });
+      return res.redirect("/login");
     }
   });
 };

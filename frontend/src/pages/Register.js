@@ -23,19 +23,19 @@ const Register = () => {
       !inpRegister.email ||
       !inpRegister.fullname
     ) {
-      setError("Please enter all fields");
+      setError("Vui lòng nhập đầy đủ thông tin");
       return false;
     }
     if (inpRegister.password.length < 6) {
-      setError("Password must be at least 6 characters");
+      setError("Vui lòng nhập mật khẩu ít nhất 6 ký tự");
       return false;
     }
     if (!inpRegister.email.includes("@")) {
-      setError("Invalid email");
+      setError("Email không hợp lệ");
       return false;
     }
     if (inpRegister.fullname.length < 6) {
-      setError("Full name must be at least 6 characters");
+      setError("Vui lòng nhập họ tên ít nhất 6 ký tự");
       return false;
     }
     setError("");
