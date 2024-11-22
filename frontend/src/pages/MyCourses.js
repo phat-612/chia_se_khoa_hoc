@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import axios from "axios";
+import Cookie from "js-cookie";
 
 const MyCourses = () => {
   const { user } = useContext(AuthContext);
@@ -20,7 +21,12 @@ const MyCourses = () => {
       try {
         const response = await axios.post(
           `${process.env.REACT_APP_API_URL}/api/getMyCourses`,
-          { userId: user.id }
+          { userId: user.id },
+          {
+            headers: {
+              Authorization: `Bearer ${Cookie.get("accessToken")}`,
+            },
+          }
         );
         setCourses(response.data);
       } catch (err) {
@@ -46,7 +52,13 @@ const MyCourses = () => {
     try {
       // Gửi yêu cầu hủy khóa học
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/cancelCourse/${enrollment_id}`
+        `${process.env.REACT_APP_API_URL}/api/cancelCourse/${enrollment_id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${Cookie.get("accessToken")}`,
+          },
+        }
       );
       // Cập nhật lại danh sách khóa học sau khi hủy thành công
       setCourses(

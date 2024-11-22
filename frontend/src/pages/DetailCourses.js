@@ -4,6 +4,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Courses from "../components/CourseCard/detailCourse";
+import Cookie from "js-cookie";
 
 const DetailCourses = () => {
   const { idCourses } = useParams(); // Lấy idCourses từ URL
@@ -50,7 +51,12 @@ const DetailCourses = () => {
       }
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/registerCourses`,
-        { userId: user.id, coursesId: idCourses }
+        { userId: user.id, coursesId: idCourses },
+        {
+          headers: {
+            Authorization: `Bearer ${Cookie.get("accessToken")}`,
+          },
+        }
       );
       setIsRegistered(true); // Đánh dấu trạng thái đã đăng ký
     } catch (err) {
@@ -63,7 +69,12 @@ const DetailCourses = () => {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/cancelCourseByUserIdCoursesId`,
-        { userId: user.id, coursesId: idCourses }
+        { userId: user.id, coursesId: idCourses },
+        {
+          headers: {
+            Authorization: `Bearer ${Cookie.get("accessToken")}`,
+          },
+        }
       );
       setIsRegistered(false); // Đánh dấu trạng thái chưa đăng ký
     } catch (err) {

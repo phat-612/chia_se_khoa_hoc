@@ -2,12 +2,22 @@
   <div class="d-flex justify-content-between align-items-center row my-3">
     <div class="col-3">
       <form action="" method="post" class="d-flex searchForm">
-        <input class="form-control me-2 searchInput" name="name" type="search" placeholder="Tìm kiếm..." aria-label="Search">
+        <input
+          class="form-control me-2 searchInput"
+          name="name"
+          type="search"
+          placeholder="Tìm kiếm..."
+          aria-label="Search"
+        />
         <button class="btn btn-outline-success" type="submit">Tìm</button>
       </form>
     </div>
     <div class="col-3 text-end">
-      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ThemDanhMucModal">
+      <button
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#ThemDanhMucModal"
+      >
         Thêm Danh Mục
       </button>
     </div>
@@ -22,22 +32,31 @@
       </tr>
     </thead>
     <tbody class="categoryTableBody">
-      <% if (data.categories && data.categories.length > 0) { %>
-      <% data.categories.forEach(function (category, ind) { %>
+      <% if (data.categories && data.categories.length > 0) { %> <%
+      data.categories.forEach(function (category, ind) { %>
       <tr>
         <th scope="row"><%= ind + 1 %></th>
         <td><%= category.name %></td>
         <td class="row">
-          <button class="btn btn-success editCategoryBtn col-1" data-bs-toggle="modal" data-bs-target="#SuaDanhMucModal" data-bs-id="<%= category.id %>" data-bs-name="<%= category.name %>">
+          <button
+            class="btn btn-success editCategoryBtn col-2"
+            data-bs-toggle="modal"
+            data-bs-target="#SuaDanhMucModal"
+            data-bs-id="<%= category.id %>"
+            data-bs-name="<%= category.name %>"
+          >
             Sửa
           </button>
-          <form action="/api/removeCategory/<%= category.id %>" method="post" class="col-5">
+          <form
+            action="/api/removeCategory/<%= category.id %>"
+            method="post"
+            class="col-5"
+          >
             <button type="submit" class="btn btn-danger">Xóa</button>
           </form>
         </td>
       </tr>
-      <% }) %>
-      <% } else { %>
+      <% }) %> <% } else { %>
       <tr>
         <td colspan="3" class="text-center">Không tìm thấy danh mục nào!</td>
       </tr>
@@ -45,45 +64,61 @@
     </tbody>
   </table>
 
-
   <div class="d-flex justify-content-center">
     <ul class="pagination">
       <% if (data.currentPage > 1) { %>
       <li class="page-item">
-        <a class="page-link" href="/admin/category?page=<%= data.currentPage - 1 %>&search=<%= data.search || '' %>">Previous</a>
+        <a
+          class="page-link"
+          href="/admin/category?page=<%= data.currentPage - 1 %>&search=<%= data.search || '' %>"
+          >Previous</a
+        >
       </li>
       <% } else { %>
-      <li class="page-item disabled"><span class="page-link">Previous</span></li>
-      <% } %>
-
-      <% for (let i = 1; i <= data.totalPages; i++) { %>
-      <li class="page-item <%= i === data.currentPage ? 'active' : '' %>">
-        <a class="page-link" href="/admin/category?page=<%= i %>&search=<%= data.search || '' %>"><%= i %></a>
+      <li class="page-item disabled">
+        <span class="page-link">Previous</span>
       </li>
-      <% } %>
-
-      <% if (data.currentPage < data.totalPages) { %>
+      <% } %> <% for (let i = 1; i <= data.totalPages; i++) { %>
+      <li class="page-item <%= i === data.currentPage ? 'active' : '' %>">
+        <a
+          class="page-link"
+          href="/admin/category?page=<%= i %>&search=<%= data.search || '' %>"
+          ><%= i %></a
+        >
+      </li>
+      <% } %> <% if (data.currentPage < data.totalPages) { %>
       <li class="page-item">
-        <a class="page-link" href="/admin/category?page=<%= data.currentPage + 1 %>&search=<%= data.search || '' %>">Next</a>
+        <a
+          class="page-link"
+          href="/admin/category?page=<%= data.currentPage + 1 %>&search=<%= data.search || '' %>"
+          >Next</a
+        >
       </li>
       <% } else { %>
       <li class="page-item disabled"><span class="page-link">Next</span></li>
       <% } %>
     </ul>
   </div>
-
-
-
-
 </div>
 
 <!-- Modal Thêm Danh Mục -->
-<div class="modal fade" id="ThemDanhMucModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="ThemDanhMucModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">THÊM DANH MỤC</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <form action="/api/addCategory" method="post">
         <div class="modal-body">
@@ -99,18 +134,33 @@
 </div>
 
 <!-- Modal Sửa Danh Mục -->
-<div class="modal fade" id="SuaDanhMucModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="SuaDanhMucModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">SỬA DANH MỤC</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <form action="/api/updateCategory" method="post">
-        <input type="hidden" name="id" class="editCategoryIdInput">
+        <input type="hidden" name="id" class="editCategoryIdInput" />
         <div class="modal-body">
           <label for="" class="form-label">Tên Danh Mục : </label>
-          <input name="name" type="text" class="form-control editCategoryNameInput" />
+          <input
+            name="name"
+            type="text"
+            class="form-control editCategoryNameInput"
+          />
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-success">SỬA</button>
@@ -119,7 +169,6 @@
     </div>
   </div>
 </div>
-
 
 <script>
   $(".editCategoryBtn").on("click", function(e) {

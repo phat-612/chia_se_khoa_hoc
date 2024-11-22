@@ -59,7 +59,7 @@ const getUserByUserName = async (username) => {
   try {
     const [row] = await pool.execute(sql, values);
     if (row.length === 0) {
-      return null;
+      return { error: "User not found" };
     }
     return row[0];
   } catch (error) {

@@ -30,9 +30,29 @@
           Xin chào : Cam Đại Hưng
         </a>
         <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-          <li><a class="dropdown-item" href="#">ĐĂNG XUẤT</a></li>
+          <li>
+            <button class="dropdown-item" id="btnLogout" href="">
+              ĐĂNG XUẤT
+            </button>
+          </li>
         </ul>
       </div>
     </div>
   </div>
+  <script>
+    $(document).ready(function() {
+      $('#btnLogout').click(function() {
+        $.ajax({
+          url: '/api/logout',
+          type: 'get',
+          success: function(data) {
+            window.location.href = '/admin';
+          },
+          error: function() {
+            alert('An error occurred. Please try again later.');
+          }
+        });
+      });
+    });
+  </script>
 </header>

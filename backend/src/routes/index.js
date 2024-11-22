@@ -12,9 +12,9 @@ const initWebRouter = (app) => {
   app.use("/api", apiRouter);
 
   // cam hung comment lai de code
-  // app.use("/admin", auth.isAdmin, adminRouter);
+  app.use("/admin", auth.isAdmin, adminRouter);
 
-  app.use("/admin", adminRouter);
+  // app.use("/admin", adminRouter);
 };
 
 export default initWebRouter;

@@ -22,28 +22,46 @@ apiRouter.post(
   ApiController.updatePassword
 );
 // bên dưới là admin
-apiRouter.post("/update-role", ApiController.updateRole);
+apiRouter.post("/update-role", auth.isAdmin, ApiController.updateRole);
 apiRouter.get("/get-all-users", auth.authToken, ApiController.getAllUsers);
 apiRouter.get("/get-info-user", auth.authToken, ApiController.getUserById);
 
 // CATEGORY
-apiRouter.post("/addCategory", ApiController.addCategory);
-apiRouter.post("/updateCategory", ApiController.updateCategory);
-apiRouter.post("/removeCategory/:idCategory", ApiController.removeCategory);
+apiRouter.post("/addCategory", auth.isAdmin, ApiController.addCategory);
+apiRouter.post("/updateCategory", auth.isAdmin, ApiController.updateCategory);
+apiRouter.post(
+  "/removeCategory/:idCategory",
+  auth.isAdmin,
+  ApiController.removeCategory
+);
 // course
-apiRouter.post("/getMyCourses", ApiController.getMyCourses);
-apiRouter.post("/addCourses", ApiController.addCourse);
-apiRouter.post("/update/:idCourse", ApiController.updateCourse);
-apiRouter.get("/removeCourse/:idCourse", ApiController.removeCourse);
+apiRouter.post("/getMyCourses", auth.authToken, ApiController.getMyCourses);
+apiRouter.post("/addCourses", auth.isAdmin, ApiController.addCourse);
+apiRouter.post("/update/:idCourse", auth.isAdmin, ApiController.updateCourse);
+apiRouter.get(
+  "/removeCourse/:idCourse",
+  auth.isAdmin,
+  ApiController.removeCourse
+);
 apiRouter.get("/courses", ApiController.getAllCoures);
 apiRouter.get("/detailCourse/:idCourses", ApiController.getDetailCoure);
 
 // ĐĂNG KÝ VÀ HỦY KHÓA HỌC
 apiRouter.post("/checkRegisterCourses", ApiController.checkRegisterCourses);
-apiRouter.post("/registerCourses", ApiController.registerCourses);
-apiRouter.post("/cancelCourse/:enrollment_id", ApiController.cancelCourse);
+apiRouter.post(
+  "/registerCourses",
+  auth.authToken,
+
+  ApiController.registerCourses
+);
+apiRouter.post(
+  "/cancelCourse/:enrollment_id",
+  auth.authToken,
+  ApiController.cancelCourse
+);
 apiRouter.post(
   "/cancelCourseByUserIdCoursesId",
+  auth.authToken,
   ApiController.cancelCourseByUserIdCoursesId
 );
 

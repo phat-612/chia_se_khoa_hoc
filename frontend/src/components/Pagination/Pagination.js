@@ -1,40 +1,62 @@
 import React from "react";
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-  const handlePrev = () => {
-    if (currentPage > 1) onPageChange(currentPage - 1);
+  const handlePageChange = (page) => {
+    if (page !== currentPage) onPageChange(page);
   };
-
-  const handleNext = () => {
-    if (currentPage < totalPages) onPageChange(currentPage + 1);
-  };
-
-  const handlePageClick = (page) => {
-    onPageChange(page);
-  };
-
-  const pages = [];
-  for (let i = 1; i <= totalPages; i++) {
-    pages.push(i);
-  }
 
   return (
-    <div className="pagination">
-      <button onClick={handlePrev} disabled={currentPage === 1}>
-        Prev
-      </button>
-      {pages.map((page) => (
-        <button
-          key={page}
-          onClick={() => handlePageClick(page)}
-          className={page === currentPage ? "active" : ""}
-        >
-          {page}
-        </button>
-      ))}
-      <button onClick={handleNext} disabled={currentPage === totalPages}>
-        Next
-      </button>
+    <div className="d-flex justify-content-center">
+      <nav>
+        <ul className="pagination">
+          {/* Nút Previous */}
+          {currentPage > 1 ? (
+            <li className="page-item">
+              <button
+                className="page-link"
+                onClick={() => handlePageChange(currentPage - 1)}
+              >
+                Previous
+              </button>
+            </li>
+          ) : (
+            <li className="page-item disabled">
+              <span className="page-link">Previous</span>
+            </li>
+          )}
+
+          {/* Các trang */}
+          {Array.from({ length: totalPages }, (i) => i + 1).map((page) => (
+            <li
+              key={page}
+              className={`page-item ${page === currentPage ? "active" : ""}`}
+            >
+              <button
+                className="page-link"
+                onClick={() => handlePageChange(page)}
+              >
+                {page}
+              </button>
+            </li>
+          ))}
+
+          {/* Nút Next */}
+          {currentPage < totalPages ? (
+            <li className="page-item">
+              <button
+                className="page-link"
+                onClick={() => handlePageChange(currentPage + 1)}
+              >
+                Next
+              </button>
+            </li>
+          ) : (
+            <li className="page-item disabled">
+              <span className="page-link">Next</span>
+            </li>
+          )}
+        </ul>
+      </nav>
     </div>
   );
 };

@@ -20,16 +20,20 @@ const login = async (req, res) => {
   const { username, password } = req.body;
   const user = await UserModel.getUserByUserName(username);
   if (user.error) {
-    return res.status(400).json({ error: "Invalid info login" });
+    return res
+      .status(400)
+      .json({ error: "Thông tin đăng nhập không chính xác" });
   }
   if (!compareSync(password, user.password)) {
-    return res.status(400).json({ error: "Invalid info login" });
+    return res
+      .status(400)
+      .json({ error: "Thông tin đăng nhập không chính xác" });
   }
   const token = jwt.sign(
     { id: user.id, role: user.role },
     process.env.ACCESS_TOKEN_SECRET,
     {
-      expiresIn: "1h",
+      expiresIn: "2d",
     }
   );
   req.session.user = {
@@ -39,7 +43,7 @@ const login = async (req, res) => {
   req.session.isLogin = true;
 
   return res.status(200).json({
-    message: "User logged in successfully",
+    message: "Đăng nhập thành công",
     user: {
       id: user.id,
       role: user.role,
@@ -50,7 +54,7 @@ const login = async (req, res) => {
 const logout = (req, res) => {
   req.session.destroy();
   res.json({
-    message: "User logged out successfully",
+    message: "Đăng xuất thành công",
   });
 };
 const updateInfoUser = async (req, res) => {
@@ -64,10 +68,10 @@ const updateInfoUser = async (req, res) => {
   const user = await UserModel.updateInfoUser(pathImg, email, fullname, id);
   if (user.error) {
     console.log(user.error);
-    return res.status(400).json({ error: "Update user failed" });
+    return res.status(400).json({ error: "Cập nhật thông tin thất bại" });
   }
   res.json({
-    message: "User updated successfully",
+    message: "Cập nhật thông tin thành công",
     user,
   });
 };
@@ -75,20 +79,20 @@ const updatePassword = async (req, res) => {
   const { oldPassword, newPassword, rePassword } = req.body;
   const { id } = req.user;
   if (newPassword !== rePassword) {
-    return res.status(400).json({ error: "Password not match" });
+    return res.status(400).json({ error: "Mật khẩu không khớp" });
   }
   const user = await UserModel.getUserById(id);
   const checkOldPassword = compareSync(oldPassword, user.password);
   if (!checkOldPassword) {
-    return res.status(400).json({ error: "Old password is incorrect" });
+    return res.status(400).json({ error: "Sai mật khẩu cũ" });
   }
   const hashPassword = hashSync(newPassword, 10);
   const result = await UserModel.updatePassword(hashPassword, id);
   if (result.error) {
-    return res.status(400).json({ error: "Update password failed" });
+    return res.status(400).json({ error: "Đổi mật khẩu thất bại" });
   }
   res.json({
-    message: "Password updated successfully",
+    message: "Đổi mật khẩu thành công",
   });
 };
 const updateRole = async (req, res) => {
@@ -241,6 +245,7 @@ const removeCourse = async (req, res) => {
 };
 const updateCourse = async (req, res) => {
   const { idCourse } = req.params;
+  req.body.description = req.body.description.trim();
   await CourseModel.updateCourse(idCourse, req.body);
   return res.redirect("/admin/course");
 };

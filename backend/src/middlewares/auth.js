@@ -20,24 +20,19 @@ const authToken = (req, res, next) => {
 const isLogin = (req, res, next) => {
   console.log(req.path);
   if (req.session.isLogin) {
-    next();
-  } else {
-    if (req.path === "/login") {
-      next();
-    }
-    return res.redirect("/admin/login");
+    return next();
   }
+  if (req.path === "/login") {
+    return next();
+  }
+  return res.redirect("/admin/login");
 };
 const isAdmin = (req, res, next) => {
   isLogin(req, res, () => {
-    if (req.path === "/login") {
+    if (req.path === "/login" || req.session.user.role === "admin") {
       return next();
     }
-    if (req.session.user.role === "admin" || req.path === "/login") {
-      next();
-    } else {
-      return res.redirect("/admin/login");
-    }
+    return res.redirect("/admin/login");
   });
 };
 const isUser = (req, res, next) => {

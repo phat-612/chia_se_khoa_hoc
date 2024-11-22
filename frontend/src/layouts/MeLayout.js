@@ -6,7 +6,7 @@ const MeLayout = () => {
   return (
     <div>
       <Header />
-      <div className="container">
+      <div className="container" style={{ marginTop: "100px" }}>
         <Outlet />
       </div>
     </div>

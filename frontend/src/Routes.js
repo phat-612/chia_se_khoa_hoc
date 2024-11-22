@@ -45,7 +45,6 @@ const routes = createBrowserRouter([
       <PrivateRoute>
         <MeLayout />
       </PrivateRoute>
-      // <MeLayout />
     ),
     children: [
       {
