@@ -11,9 +11,15 @@ const getAllCategory = async (limit, offset) => {
 const getAllCategoryBySearch = async (limit, offset, search) => {
   limit = limit || 7;
   offset = offset || 0;
-  const sql = "SELECT * FROM `categories` WHERE name = ? LIMIT ? OFFSET ? ";
-  const [row] = await pool.execute(sql, [search, limit, offset]);
-  return row;
+  const sql = "SELECT * FROM `categories` WHERE name LIKE ? LIMIT ? OFFSET ?";
+  const [rows] = await pool.execute(sql, [`%${search}%`, limit, offset]);
+  return rows;
+};
+
+const getTotalBySearch = async (search) => {
+  const sql = "SELECT COUNT(*) AS total FROM `categories` WHERE name LIKE ?";
+  const [result] = await pool.execute(sql, [`%${search}%`]);
+  return result;
 };
 
 const addCategory = async (name) => {
@@ -63,9 +69,11 @@ const getTotal = async () => {
 
 export default {
   getAllCategory,
+  getAllCategoryBySearch,
   addCategory,
   updateCategory,
   removeCategory,
   getAllIdCategoryInCourses,
   getTotal,
+  getTotalBySearch,
 };

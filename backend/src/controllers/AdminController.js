@@ -5,31 +5,41 @@ import UserModel from "../services/UserModel";
 
 // CATEGORY
 const getCategoryPage = async (req, res) => {
-  const { search, page = 1 } = req.query;
-  const limit = 7;
-  const offset = (page - 1) * limit;
-  let categories;
-  if (search) {
-    categories = await CategoryModel.getAllCategoryBySearch(
-      limit,
-      offset,
-      search
-    );
-  } else {
-    categories = await CategoryModel.getAllCategory(limit, offset);
+  try {
+    const { search, page = 1 } = req.query;
+    const limit = 7;
+    const offset = (page - 1) * limit;
+    let categories, total;
+
+    if (search) {
+      categories = await CategoryModel.getAllCategoryBySearch(
+        limit,
+        offset,
+        search
+      );
+      total = await CategoryModel.getTotalBySearch(search);
+    } else {
+      categories = await CategoryModel.getAllCategory(limit, offset);
+      total = await CategoryModel.getTotal();
+    }
+
+    const totalPages = Math.ceil(total[0].total / limit);
+
+    res.render("main", {
+      data: {
+        title: "Courses",
+        header: "partials/header",
+        page: "category/allCategory",
+        categories,
+        currentPage: parseInt(page),
+        totalPages,
+        search,
+      },
+    });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Đã xảy ra lỗi khi xử lý danh mục.");
   }
-  const total = await CategoryModel.getTotal();
-  const totalPages = Math.ceil(total[0].total / limit);
-  res.render("main", {
-    data: {
-      title: "Courses",
-      header: "partials/header",
-      page: "category/allCategory",
-      categories,
-      currentPage: parseInt(page),
-      totalPages,
-    },
-  });
 };
 
 // COURSES
@@ -37,8 +47,10 @@ const getCoursePage = async (req, res) => {
   const { category_id, page = 1 } = req.query; // Lấy category_id và page từ query string (mặc định là trang 1)
   const limit = 5; // Số khóa học mỗi trang
   const offset = (page - 1) * limit;
+
   // Lấy danh sách danh mục
   const categories = await CourseModel.getCategories();
+
   // Lấy danh sách khóa học theo category_id và phân trang
   let courses;
   if (category_id) {
@@ -51,10 +63,18 @@ const getCoursePage = async (req, res) => {
     courses = await CourseModel.getCourses(limit, offset); // Lấy tất cả khóa học nếu không có lọc
   }
 
+  // Định dạng ngày tháng trong khóa học
+  courses.forEach((course) => {
+    const date = new Date(course.created_at);
+    const day = String(date.getDate()).padStart(2, "0"); // Lấy ngày (dd)
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Lấy tháng (mm)
+    const year = String(date.getFullYear()).slice();
+    course.formattedDate = `${day}/${month}/${year}`;
+  });
+
   // Lấy tổng số khóa học để tính số trang
   const totalCourses = await CourseModel.getTotalCourses(category_id);
   const totalPages = Math.ceil(totalCourses / limit); // Tính tổng số trang
-
   res.render("main", {
     data: {
       title: "Danh Sách Khóa Học",

@@ -11,8 +11,8 @@ const SearchBar = ({ onSearch }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div class="row mb-4">
-        <div class="col-11">
+      <div className="row mb-4">
+        <div className="col-11">
           <input
             type="text"
             className="form-control"
@@ -21,7 +21,7 @@ const SearchBar = ({ onSearch }) => {
             onChange={(e) => setSearchText(e.target.value)} // Cập nhật giá trị ô tìm kiếm
           />
         </div>
-        <div class="col-1">
+        <div className="col-1">
           <button type="submit" className="btn btn-primary w-100">
             Tìm...
           </button>

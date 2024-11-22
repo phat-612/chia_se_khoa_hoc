@@ -3,6 +3,7 @@ import React, { useEffect, useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Courses from "../components/CourseCard/detailCourse";
 
 const DetailCourses = () => {
   const { idCourses } = useParams(); // Lấy idCourses từ URL
@@ -10,14 +11,19 @@ const DetailCourses = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const [isRegistered, setIsRegistered] = useState(false); // Trạng thái đã đăng ký
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [courseDetail, setCourseDetail] = useState(null);
   // Kiểm tra trạng thái đăng ký và tải danh sách khóa học
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/detailCourse/${idCourses}`
+        );
+        setCourseDetail(response.data);
+
         if (!user || !user.id) {
-          navigate("/login"); // Chuyển hướng nếu chưa đăng nhập
-          return;
+          return setIsRegistered(false);
         }
         // Gọi API kiểm tra đăng ký
         const checkResponse = await axios.post(
@@ -32,13 +38,16 @@ const DetailCourses = () => {
         setLoading(false); // Dừng trạng thái loading
       }
     };
-
     fetchData();
   }, [idCourses, user, navigate]);
 
   // Hàm đăng ký khóa học
   const registerCourses = async () => {
     try {
+      if (!user || !user.id) {
+        navigate("/login");
+        return;
+      }
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/registerCourses`,
         { userId: user.id, coursesId: idCourses }
@@ -68,18 +77,19 @@ const DetailCourses = () => {
 
   return (
     <div>
-      <h2>Chi tiết khóa học</h2>
+      <h2 className="text-center">Chi tiết khóa học</h2>
+      {courseDetail && <Courses course={courseDetail} />}
 
       {isRegistered ? (
         <button
           type="button"
-          className="btn btn-danger"
+          className="btn btn-danger m-4"
           onClick={cancelRegistration}
         >
           Hủy Đăng Ký
         </button>
       ) : (
-        <button className="btn btn-primary" onClick={registerCourses}>
+        <button className="btn btn-primary m-4" onClick={registerCourses}>
           Đăng ký
         </button>
       )}

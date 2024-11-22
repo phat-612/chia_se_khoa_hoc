@@ -36,6 +36,7 @@ apiRouter.post("/addCourses", ApiController.addCourse);
 apiRouter.post("/update/:idCourse", ApiController.updateCourse);
 apiRouter.get("/removeCourse/:idCourse", ApiController.removeCourse);
 apiRouter.get("/courses", ApiController.getAllCoures);
+apiRouter.get("/detailCourse/:idCourses", ApiController.getDetailCoure);
 
 // ĐĂNG KÝ VÀ HỦY KHÓA HỌC
 apiRouter.post("/checkRegisterCourses", ApiController.checkRegisterCourses);

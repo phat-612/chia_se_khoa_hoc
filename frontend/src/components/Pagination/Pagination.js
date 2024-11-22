@@ -18,10 +18,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     pages.push(i);
   }
 
-  console.log("Current Page:", currentPage);
-  console.log("Total Pages:", totalPages);
-  console.log("Pages:", pages);
-
   return (
     <div className="pagination">
       <button onClick={handlePrev} disabled={currentPage === 1}>

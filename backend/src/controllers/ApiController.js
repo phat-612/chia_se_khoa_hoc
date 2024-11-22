@@ -130,6 +130,12 @@ const getAllCategory = async (req, res) => {
   return categories;
 };
 
+const getCategoryBySearch = async (req, res) => {
+  const { name } = req.body;
+  const categories = await CategoryModel.getAllCategoryBySearch(name);
+  return categories;
+};
+
 const addCategory = async (req, res) => {
   const { name } = req.body;
   const category = await CategoryModel.addCategory(name);
@@ -260,7 +266,15 @@ const getAllCoures = async (req, res) => {
     return res.status(500).json({ error: "Đã xảy ra lỗi khi lấy dữ liệu" });
   }
 };
+const getDetailCoure = async (req, res) => {
+  const id = req.params.idCourses;
+  if (!id) {
+    return res.status(400).json({ message: "Thiếu id." });
+  }
 
+  const detailCourse = await CourseModel.getDetailCourse(id);
+  return res.json(detailCourse);
+};
 export default {
   register,
   login,
@@ -273,6 +287,7 @@ export default {
 
   // CATEGORY
   getAllCategory,
+  getCategoryBySearch,
   addCategory,
   updateCategory,
   removeCategory,
@@ -282,6 +297,7 @@ export default {
   removeCourse,
   updateCourse,
   getAllCoures,
+  getDetailCoure,
 
   cancelCourse,
   registerCourses,
