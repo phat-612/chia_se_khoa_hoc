@@ -15,6 +15,8 @@ adminRouter.get("/addCourse", AdminController.getAddCourse);
 
 // USER
 adminRouter.get("/user", AdminController.getUserPage);
+// REVIEWS
+adminRouter.get("/reviews", AdminController.getReviewPage);
 // login
 adminRouter.get("/login", AdminController.getLoginPage);
 

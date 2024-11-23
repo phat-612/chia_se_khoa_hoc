@@ -146,6 +146,15 @@ const getUserPage = async (req, res) => {
     },
   });
 };
+// REVIEWS
+const getReviewPage = async (req, res) => {
+  res.render("main", {
+    data: {
+      title: "Reviews",
+      page: "reviews",
+    },
+  });
+};
 
 // login
 const getLoginPage = async (req, res) => {
@@ -162,5 +171,6 @@ export default {
   getEditCourse,
   getAddCourse,
   getUserPage,
+  getReviewPage,
   getLoginPage,
 };
