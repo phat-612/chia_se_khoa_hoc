@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Courses from "../components/CourseCard/detailCourse";
 import Cookie from "js-cookie";
+import { Link } from "react-router-dom";
 
 const DetailCourses = () => {
   const { idCourses } = useParams(); // Lấy idCourses từ URL
@@ -32,11 +33,10 @@ const DetailCourses = () => {
           { userId: user.id, coursesId: idCourses }
         );
         setIsRegistered(checkResponse.data.isRegistered);
+        setLoading(false); // Dừng trạng thái loading
       } catch (err) {
         setError("Đã xảy ra lỗi khi tải dữ liệu.");
         console.error(err);
-      } finally {
-        setLoading(false); // Dừng trạng thái loading
       }
     };
     fetchData();
@@ -87,25 +87,52 @@ const DetailCourses = () => {
   if (error) return <div className="alert alert-danger">{error}</div>;
 
   return (
-    <div>
-      <h2 className="text-center">Chi tiết khóa học</h2>
-      {courseDetail && <Courses course={courseDetail} />}
+    <div className="container">
+      <h1 className="text-center mb-3">Chi tiết khóa học</h1>
+      <div className="row">
+        <div className="col-6">
+          <img src={courseDetail.thumbnail_url} alt="" width={"100%"} />
+        </div>
+        <div className="col-6">
+          <h4 className="h4 mb-3">Tên Khóa Học:</h4>
+          <p className="lead"> {courseDetail.title}</p>
+          <h4 className="h4 mb-3">Mô Tả Khóa Học:</h4>
+          <p className="lead"> {courseDetail.description}</p>
+          <h4 className="h4 mb-3">Danh Mục:</h4>
+          <p className="lead"> {courseDetail.category_name}</p>
+          <h4 className="h4 mb-3">Ngày Tạo:</h4>
+          <p className="lead">
+            {new Date(courseDetail.created_at).toLocaleDateString("vi-VN")}
+          </p>
+        </div>
+        <div className="col-12 d-flex justify-content-end">
+          {isRegistered ? (
+            <button
+              type="button"
+              className="btn btn-danger me-4"
+              onClick={cancelRegistration}
+            >
+              Hủy Đăng Ký
+            </button>
+          ) : (
+            <button className="btn btn-primary me-4" onClick={registerCourses}>
+              Đăng ký
+            </button>
+          )}
 
-      {isRegistered ? (
-        <button
-          type="button"
-          className="btn btn-danger m-4"
-          onClick={cancelRegistration}
-        >
-          Hủy Đăng Ký
-        </button>
-      ) : (
-        <button className="btn btn-primary m-4" onClick={registerCourses}>
-          Đăng ký
-        </button>
-      )}
+          <Link
+            to={courseDetail.course_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary"
+          >
+            Đến Tài Liệu
+          </Link>
+        </div>
 
-      <hr />
+        {/* đây là chỗ đánh giá viết trong cái div phía dưới */}
+        <div className="col-12"></div>
+      </div>
     </div>
   );
 };

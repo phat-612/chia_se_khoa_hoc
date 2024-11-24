@@ -27,11 +27,11 @@
       <tr>
         <th scope="row"><%= ind + 1 + (data.currentPage - 1) * 7 %></th>
         <td><%= category.name %></td>
-        <td class="row">
-          <button class="btn btn-success editCategoryBtn col-2" data-bs-toggle="modal" data-bs-target="#SuaDanhMucModal" data-bs-id="<%= category.id %>" data-bs-name="<%= category.name %>">
+        <td class=" d-flex justify-content-start">
+          <button class="btn btn-success editCategoryBtn me-3" data-bs-toggle="modal" data-bs-target="#SuaDanhMucModal" data-bs-id="<%= category.id %>" data-bs-name="<%= category.name %>">
             Sửa
           </button>
-          <form action="/api/removeCategory/<%= category.id %>" method="post" class="col-5">
+          <form action="/api/removeCategory/<%= category.id %>" method="post" class="">
             <button type="submit" class="btn btn-danger">Xóa</button>
           </form>
         </td>

@@ -1,8 +1,7 @@
 const globalVariable = (req, res, next) => {
-  //   console.log(res.locals);
-  //   if (!res.locals.error) {
-  //     res.locals.error = "";
-  //   }
+  if (req.session.user) {
+    res.locals.loginUser = req.session.user;
+  }
   next();
 };
 

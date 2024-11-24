@@ -16,9 +16,8 @@
       </ul>
 
       <div class="dropdown text-end">
-        <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1"
-          data-bs-toggle="dropdown" aria-expanded="false">
-          Xin chào : Cam Đại Hưng
+        <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+          Xin chào : <%= loginUser. %>
         </a>
         <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
           <li>
@@ -31,15 +30,15 @@
     </div>
   </div>
   <script>
-    $(document).ready(function () {
-      $('#btnLogout').click(function () {
+    $(document).ready(function() {
+      $('#btnLogout').click(function() {
         $.ajax({
           url: '/api/logout',
           type: 'get',
-          success: function (data) {
+          success: function(data) {
             window.location.href = '/admin';
           },
-          error: function () {
+          error: function() {
             alert('An error occurred. Please try again later.');
           }
         });
