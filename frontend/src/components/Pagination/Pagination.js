@@ -26,7 +26,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           )}
 
           {/* Các trang */}
-          {Array.from({ length: totalPages }, (i) => i + 1).map((page) => (
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <li
               key={page}
               className={`page-item ${page === currentPage ? "active" : ""}`}

@@ -10,7 +10,7 @@ const CourseList = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 8;
 
   const fetchCourses = async (page, search = "") => {
     setLoading(true);

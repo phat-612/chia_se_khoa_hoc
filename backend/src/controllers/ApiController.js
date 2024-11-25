@@ -235,14 +235,30 @@ const cancelCourseByUserIdCoursesId = async (req, res) => {
 };
 
 const addCourse = async (req, res) => {
+  for (const key in req.body) {
+    if (req.body[key] === "" || req.body.category_id === undefined) {
+      return res.status(400).send("Vui lòng điền đầy đủ thông tin");
+    }
+  }
+  console.log(req.body.category_id);
   await CourseModel.addCourse(req.body);
   return res.redirect("/admin/course");
 };
 const removeCourse = async (req, res) => {
   const { idCourse } = req.params;
-  await CourseModel.removeCourse(idCourse);
-  return res.redirect("/admin/course");
+  try {
+    await CourseModel.removeCourse(idCourse);
+    return res.redirect("back");
+  } catch (error) {
+    // Kiểm tra lỗi khóa ngoại
+    if (error.code === "ER_ROW_IS_REFERENCED_2") {
+      return res
+        .status(400)
+        .send("Khóa học đã có người đăng ký và không thể xóa.");
+    }
+  }
 };
+
 const updateCourse = async (req, res) => {
   const { idCourse } = req.params;
   req.body.description = req.body.description.trim();
@@ -252,11 +268,9 @@ const updateCourse = async (req, res) => {
 // lấy tất cả sản phẩm hiện ra giao diện
 const getAllCoures = async (req, res) => {
   // Lấy limit và offset từ query params
-  const limit = parseInt(req.query.limit) || 6;
+  const limit = parseInt(req.query.limit) || 8;
   const offset = parseInt(req.query.offset) || 0;
-
   const search = req.query.search || "";
-
   try {
     const { courses, total } = await CourseModel.getAllCoursesUser(
       limit,
@@ -274,7 +288,7 @@ const getAllCoures = async (req, res) => {
 const getDetailCoure = async (req, res) => {
   const id = req.params.idCourses;
   if (!id) {
-    return res.status(400).json({ message: "Thiếu id." });
+    return res.status(400).json({ message: "Thiếu id" });
   }
 
   const detailCourse = await CourseModel.getDetailCourse(id);

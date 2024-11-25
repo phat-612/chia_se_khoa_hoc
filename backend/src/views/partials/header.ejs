@@ -1,12 +1,18 @@
 <header class="p-3 mb-3 border-bottom">
   <div class="container">
-    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+    <div
+      class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
+    >
+      <ul
+        class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
+      >
         <li><a href="/admin" class="nav-link px-2 text-dark">TRANG CHỦ</a></li>
         <li>
           <a href="/admin/course" class="nav-link px-2 text-dark">KHÓA HỌC</a>
         </li>
-        <li><a href="/admin/reviews" class="nav-link px-2 text-dark">ĐÁNH GIÁ</a></li>
+        <li>
+          <a href="/admin/reviews" class="nav-link px-2 text-dark">ĐÁNH GIÁ</a>
+        </li>
         <li>
           <a href="/admin/user" class="nav-link px-2 text-dark">NGƯỜI DÙNG</a>
         </li>
@@ -16,9 +22,6 @@
       </ul>
 
       <div class="dropdown text-end">
-        <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-          Xin chào : <%= loginUser. %>
-        </a>
         <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
           <li>
             <button class="dropdown-item" id="btnLogout" href="">
@@ -30,17 +33,17 @@
     </div>
   </div>
   <script>
-    $(document).ready(function() {
-      $('#btnLogout').click(function() {
+    $(document).ready(function () {
+      $("#btnLogout").click(function () {
         $.ajax({
-          url: '/api/logout',
-          type: 'get',
-          success: function(data) {
-            window.location.href = '/admin';
+          url: "/api/logout",
+          type: "get",
+          success: function (data) {
+            window.location.href = "/admin";
           },
-          error: function() {
-            alert('An error occurred. Please try again later.');
-          }
+          error: function () {
+            alert("An error occurred. Please try again later.");
+          },
         });
       });
     });

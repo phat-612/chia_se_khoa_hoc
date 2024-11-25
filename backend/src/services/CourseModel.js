@@ -104,13 +104,13 @@ const addCourse = async (data) => {
 };
 const removeCourse = async (id) => {
   // Câu lệnh SQL để xóa khóa học theo id
-  const sql = "DELETE FROM `courses` WHERE id =?";
+  const sql = "DELETE FROM `courses` WHERE id = ?";
   try {
-    const [rows] = await pool.query(sql, id);
+    const [rows] = await pool.query(sql, [id]); // Đảm bảo truyền id dưới dạng mảng
     return rows; // Trả về kết quả từ truy vấn
-  } catch {
+  } catch (error) {
     console.error("Error removing course:", error);
-    throw error;
+    throw error; // Ném lại lỗi nếu có
   }
 };
 
@@ -170,7 +170,7 @@ const getCategories = async () => {
   }
 };
 const getAllCoursesUser = async (limit, offset, search = "") => {
-  const searchQuery = `%${search}%`; // Tạo chuỗi tìm kiếm với dấu "%"
+  const searchQuery = `%${search}%`;
 
   const coursesSql = `
     SELECT 
