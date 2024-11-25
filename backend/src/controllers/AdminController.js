@@ -2,6 +2,8 @@ import AdminModel from "../services/AdminModel";
 import CategoryModel from "../services/CategoryModel";
 import CourseModel from "../services/CourseModel";
 import UserModel from "../services/UserModel";
+import ReviewModel from "../services/ReviewModel";
+import moment from "moment";
 
 // CATEGORY
 const getCategoryPage = async (req, res) => {
@@ -148,10 +150,53 @@ const getUserPage = async (req, res) => {
 };
 // REVIEWS
 const getReviewPage = async (req, res) => {
+  let { find, rating, status, page } = req.query;
+  if (!rating) {
+    rating = "all";
+  }
+  if (!status) {
+    status = "all";
+  }
+  if (!find) {
+    find = "";
+  }
+  if (!page) {
+    page = 1;
+  }
+  const limit = 20;
+  const offset = (page - 1) * limit;
+  let reviews = await ReviewModel.getAllReviews(
+    find,
+    rating,
+    status,
+    limit,
+    offset
+  );
+  const quantityReviews = await ReviewModel.countAllReview(
+    find,
+    rating,
+    status
+  );
+  const totalPage = Math.ceil(quantityReviews / limit);
+  reviews = reviews.map((review) => {
+    return {
+      ...review,
+      created_at: moment(review.created_at)
+        .utcOffset("+07:00")
+        .format("DD/MM/YYYY"),
+    };
+  });
+  console.log(parseInt(page));
   res.render("main", {
     data: {
       title: "Reviews",
       page: "reviews",
+      reviews,
+      currentPage: parseInt(page),
+      totalPage,
+      find,
+      rating,
+      status,
     },
   });
 };

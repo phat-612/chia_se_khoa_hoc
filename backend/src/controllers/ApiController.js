@@ -4,6 +4,7 @@ import UserModel from "../services/UserModel";
 import CategoryModel from "../services/CategoryModel";
 import CourseModel from "../services/CourseModel";
 import AdminModel from "../services/AdminModel";
+import ReviewModel from "../services/ReviewModel";
 const register = async (req, res) => {
   const { username, password, email, fullname } = req.body;
   const hashPassword = hashSync(password, 10);
@@ -125,6 +126,21 @@ const getUserById = async (req, res) => {
   res.json({
     user,
     message: "Get user by id successfully",
+  });
+};
+// REVIEW
+const updateStatusReview = async (req, res) => {
+  const { id, status } = req.body;
+  console.log(req.body);
+  if (status != 0 && status != 1) {
+    return res.status(400).json({ error: "Status is invalid" });
+  }
+  const review = await ReviewModel.updateStatusReview(status, id);
+  if (review.error) {
+    return res.status(400).json({ error: "Update status failed" });
+  }
+  res.json({
+    message: "Review updated successfully",
   });
 };
 
@@ -303,6 +319,9 @@ export default {
   updateRole,
   getAllUsers,
   getUserById,
+
+  // REVIEW
+  updateStatusReview,
 
   // CATEGORY
   getAllCategory,

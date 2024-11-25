@@ -18,7 +18,6 @@ const authToken = (req, res, next) => {
 };
 
 const isLogin = (req, res, next) => {
-  console.log(req.path);
   if (req.session.isLogin) {
     return next();
   }

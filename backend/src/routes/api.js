@@ -25,6 +25,8 @@ apiRouter.post(
 apiRouter.post("/update-role", auth.isAdmin, ApiController.updateRole);
 apiRouter.get("/get-all-users", auth.authToken, ApiController.getAllUsers);
 apiRouter.get("/get-info-user", auth.authToken, ApiController.getUserById);
+// REVIEW
+apiRouter.post("/updateStatus", auth.isAdmin, ApiController.updateStatusReview);
 
 // CATEGORY
 apiRouter.post("/addCategory", auth.isAdmin, ApiController.addCategory);
