@@ -143,6 +143,32 @@ const updateStatusReview = async (req, res) => {
     message: "Review updated successfully",
   });
 };
+const addReview = async (req, res) => {
+  const { id } = req.user;
+  const data = req.body;
+  const result = await ReviewModel.addReview(
+    id,
+    data.course_id,
+    data.rating,
+    data.comment
+  );
+  if (result.error) {
+    return res.status(400).json({
+      message: "Add review failed",
+    });
+  }
+  res.json({
+    message: "Add review successfully",
+  });
+};
+const getReviewByIdCourse = async (req, res) => {
+  const { id } = req.params;
+  const reviews = await ReviewModel.getReviewByIdCourse(id);
+  res.json({
+    message: "success",
+    reviews,
+  });
+};
 
 // CATEGORY
 const getAllCategory = async (req, res) => {
@@ -322,6 +348,8 @@ export default {
 
   // REVIEW
   updateStatusReview,
+  addReview,
+  getReviewByIdCourse,
 
   // CATEGORY
   getAllCategory,

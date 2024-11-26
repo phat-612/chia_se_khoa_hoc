@@ -4,6 +4,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Courses from "../components/CourseCard/detailCourse";
+import ReviewCourse from "../components/CourseCard/ReviewCourse";
 import Cookie from "js-cookie";
 import { Link } from "react-router-dom";
 
@@ -133,7 +134,9 @@ const DetailCourses = () => {
         </div>
 
         {/* đây là chỗ đánh giá viết trong cái div phía dưới */}
-        <div className="col-12"></div>
+        <div className="col-12">
+          <ReviewCourse />
+        </div>
       </div>
     </div>
   );

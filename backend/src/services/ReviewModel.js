@@ -40,7 +40,7 @@ const getReviewByIdCourse = async (course_id) => {
     if (rows.length == 0) {
       return null;
     }
-    return rows[0];
+    return rows;
   } catch (error) {
     return { error: error.message };
   }
