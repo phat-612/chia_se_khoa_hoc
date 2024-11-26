@@ -25,7 +25,9 @@ const DetailCourses = () => {
         setCourseDetail(response.data);
 
         if (!user || !user.id) {
-          return setIsRegistered(false);
+          setIsRegistered(false);
+          setLoading(false); // Dừng trạng thái loading
+          return;
         }
         // Gọi API kiểm tra đăng ký
         const checkResponse = await axios.post(
