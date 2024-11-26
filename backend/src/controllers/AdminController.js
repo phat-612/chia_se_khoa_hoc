@@ -178,6 +178,7 @@ const getReviewPage = async (req, res) => {
     status
   );
   const totalPage = Math.ceil(quantityReviews / limit);
+  console.log(reviews);
   reviews = reviews.map((review) => {
     return {
       ...review,

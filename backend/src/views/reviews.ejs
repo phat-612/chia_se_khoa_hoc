@@ -2,37 +2,43 @@
     <h3 class="text-uppercase text-center mb-3">danh sách đánh giá</h3>
     <div class="row">
         <div class="col-md-8 mb-4">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Tìm kiếm" aria-label="Username"
-                    aria-describedby="basic-addon1">
-                <button type="submit" class="input-group-text" id="basic-addon1"><i
-                        class="fa-solid fa-magnifying-glass"></i></button>
+            <div>
+                <form class="input-group mb-3" action="" method="get">
+                    <input type="text" class="form-control" name="find" placeholder="Tìm kiếm" aria-label="Username"
+                        value="<%= data.find %>" aria-describedby="basic-addon1">
+                    <button type="submit" class="input-group-text" id="basic-addon1"><i
+                            class="fa-solid fa-magnifying-glass"></i></button>
+                    <input type="text" hidden name="rating" value="<%= data.rating %>">
+                    <input type="text" hidden name="status" value="<%= data.status %>">
+                </form>
             </div>
         </div>
 
         <div class="col-md-2 mb-4">
-            <div class="input-group mb-3">
-                <select class="form-select" id="inputGroupSelect01">
-                    <option selected>Tất cả đánh giá</option>
-                    <option value="1">1 sao</option>
-                    <option value="2">2 sao</option>
-                    <option value="3">3 sao</option>
-                    <option value="4">4 sao</option>
-                    <option value="5">
-                        5 sao
-                    </option>
+            <form method="get" action="" class="input-group mb-3" id="formRatingFilter">
+                <select class="form-select" id="inputGroupSelect01" name="rating">
+                    <option value="all" <%=data.rating=='all' ? 'selected' : '' %>>Tất cả đánh giá</option>
+                    <option value="1" <%=data.rating=='1' ? 'selected' : '' %>>1 sao</option>
+                    <option value="2" <%=data.rating=='2' ? 'selected' : '' %>>2 sao</option>
+                    <option value="3" <%=data.rating=='3' ? 'selected' : '' %>>3 sao</option>
+                    <option value="4" <%=data.rating=='4' ? 'selected' : '' %>>4 sao</option>
+                    <option value="5" <%=data.rating=='5' ? 'selected' : '' %>>5 sao</option>
                 </select>
-            </div>
+                <input type="text" hidden name="find" value="<%= data.find %>">
+                <input type="text" hidden name="status" value="<%= data.status %>">
+            </form>
         </div>
 
         <div class="col-md-2 mb-4">
-            <div class="input-group mb-3">
-                <select class="form-select" id="inputGroupSelect01">
-                    <option selected>Tất cả trạng thái</option>
-                    <option value="1">Công bố</option>
-                    <option value="2">Không công bố</option>
+            <form class="input-group mb-3" id="formStatusFilter" method="get" action="">
+                <select class="form-select" id="inputGroupSelect01" name="status">
+                    <option value="all" <%=data.status=='all' ? 'selected' : '' %>>Tất cả trạng thái</option>
+                    <option value="0" <%=data.status=='0' ? 'selected' : '' %>>Không công bố</option>
+                    <option value="1" <%=data.status=='1' ? 'selected' : '' %>>Công bố</option>
                 </select>
-            </div>
+                <input type="text" hidden name="find" value="<%= data.find %>">
+                <input type="text" hidden name="rating" value="<%= data.rating %>">
+            </form>
         </div>
 
     </div>
@@ -123,6 +129,12 @@
                     console.log(error);
                 }
             });
+        });
+        $('select[name="rating"]').change(function () {
+            $('#formRatingFilter').submit()
+        });
+        $('select[name="status"]').change(function () {
+            $('#formStatusFilter').submit()
         });
     });
 </script>
