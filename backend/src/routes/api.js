@@ -28,6 +28,7 @@ apiRouter.get("/get-info-user", auth.authToken, ApiController.getUserById);
 // REVIEW
 apiRouter.post("/updateStatus", auth.isAdmin, ApiController.updateStatusReview);
 apiRouter.post("/addReview", auth.authToken, ApiController.addReview);
+apiRouter.post("/editReview", auth.authToken, ApiController.editReview);
 apiRouter.get("/getReviewByIdCourse/:id", ApiController.getReviewByIdCourse);
 
 // CATEGORY

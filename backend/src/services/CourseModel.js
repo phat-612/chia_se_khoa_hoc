@@ -1,8 +1,6 @@
 import pool from "../configs/db";
 
 const getCourses = async (limit, offset) => {
-  limit = limit || 5; // Giá trị mặc định là 5
-  offset = offset || 0; // Giá trị mặc định là 0
   const sql = `
     SELECT courses.id, courses.title, courses.description, courses.thumbnail_url, courses.course_url, courses.created_at, categories.name AS category_name
     FROM courses
@@ -31,17 +29,19 @@ LEFT JOIN courses c ON e.course_id = c.id
 WHERE e.user_id = ?
 `;
   const rows = await pool.execute(sql, [userId]);
+  console.log(
+    "----------------------------------------------------------------"
+  );
+  console.log(rows[0]);
   return rows[0];
 };
 const getTotalCourses = async (category_id) => {
   let sql;
-  let params = [];
+  const params = [];
   if (category_id) {
-    // Nếu có category_id, chỉ lấy số lượng khóa học theo danh mục
     sql = "SELECT COUNT(*) AS total FROM courses WHERE category_id = ?";
-    params = [category_id];
+    params.push(category_id);
   } else {
-    // Nếu không có category_id, lấy tổng số khóa học
     sql = "SELECT COUNT(*) AS total FROM courses";
   }
   try {
@@ -76,11 +76,8 @@ const getDetailCourse = async (id) => {
   return row[0];
 };
 const addCourse = async (data) => {
-  // Lấy thời gian hiện tại cho created_at và updated_at
   const createdAt = new Date();
   const updatedAt = new Date();
-
-  // Câu lệnh SQL để thêm khóa học mới
   const sql =
     "INSERT INTO courses (title, description, category_id, thumbnail_url, course_url, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -96,21 +93,20 @@ const addCourse = async (data) => {
       updatedAt,
     ]);
 
-    return rows; // Trả về kết quả từ truy vấn
+    return rows;
   } catch (error) {
     console.error("Error adding course:", error);
-    throw error; // Đảm bảo ném lỗi nếu có lỗi xảy ra
+    throw error;
   }
 };
 const removeCourse = async (id) => {
-  // Câu lệnh SQL để xóa khóa học theo id
   const sql = "DELETE FROM `courses` WHERE id = ?";
   try {
-    const [rows] = await pool.query(sql, [id]); // Đảm bảo truyền id dưới dạng mảng
-    return rows; // Trả về kết quả từ truy vấn
+    const [rows] = await pool.query(sql, [id]);
+    return rows;
   } catch (error) {
     console.error("Error removing course:", error);
-    throw error; // Ném lại lỗi nếu có
+    throw error;
   }
 };
 
@@ -151,7 +147,7 @@ const updateCourse = async (id, data) => {
       data.thumbnail_url,
       data.course_url,
       updatedAt,
-      id, // Thêm id để điều kiện WHERE hoạt động
+      id,
     ]);
 
     return rows; // Trả về kết quả từ truy vấn
@@ -186,7 +182,7 @@ const getAllCoursesUser = async (limit, offset, search = "") => {
     WHERE courses.title LIKE ? OR courses.description LIKE ?
     LIMIT ? OFFSET ?;
   `;
-
+  //
   const countSql = `
     SELECT COUNT(*) AS total
     FROM courses
@@ -194,14 +190,15 @@ const getAllCoursesUser = async (limit, offset, search = "") => {
   `;
 
   // Truy vấn lấy khóa học theo tìm kiếm và phân trang
-  const [coursesRows] = await pool.execute(coursesSql, [
+  const [rows] = await pool.execute(coursesSql, [
     searchQuery,
     searchQuery,
     limit,
     offset,
   ]);
+  console.log(rows);
   // Nếu không có kết quả, trả về mảng rỗng và tổng số = 0
-  if (coursesRows.length == 0) {
+  if (rows.length == 0) {
     return { courses: [], total: 0 };
   }
 
@@ -214,9 +211,8 @@ const getAllCoursesUser = async (limit, offset, search = "") => {
   }
 
   const total = countRows[0].total;
-
   return {
-    courses: coursesRows, // Danh sách khóa học
+    courses: rows, // Danh sách khóa học
     total: total, // Tổng số khóa học
   };
 };

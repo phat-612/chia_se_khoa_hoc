@@ -33,7 +33,8 @@ const countAllReview = async (find, rating, status) => {
 };
 
 const getReviewByIdCourse = async (course_id) => {
-  const sql = "SELECT * FROM reviews WHERE course_id = ?";
+  const sql =
+    "SELECT reviews.*, users.avatar, users.fullname FROM reviews JOIN users ON users.id = reviews.user_id WHERE course_id = ?";
   const values = [course_id];
   try {
     const [rows] = await pool.execute(sql, values);
@@ -58,6 +59,18 @@ const addReview = async (user_id, course_id, rating, comment) => {
   }
 };
 
+const editReview = async (rating, comment, id) => {
+  const sql =
+    "UPDATE reviews SET rating = ?, comment = ?, status=0  WHERE id = ?";
+  const values = [rating, comment, id];
+  try {
+    const [row] = await pool.execute(sql, values);
+    return row;
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+
 const updateStatusReview = async (status, id) => {
   const sql = "UPDATE reviews SET status = ? WHERE id = ?";
   const values = [status, id];
@@ -73,5 +86,6 @@ export default {
   countAllReview,
   getReviewByIdCourse,
   addReview,
+  editReview,
   updateStatusReview,
 };

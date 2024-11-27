@@ -48,7 +48,7 @@ const getCategoryPage = async (req, res) => {
 const getCoursePage = async (req, res) => {
   const { category_id, page = 1 } = req.query; // Lấy category_id và page từ query string (mặc định là trang 1)
   const limit = 5; // Số khóa học mỗi trang
-  const offset = (page - 1) * limit;
+  const offset = (page - 1) * limit; //bỏ qua số khóa học
 
   // Lấy danh sách danh mục
   const categories = await CourseModel.getCategories();
@@ -104,6 +104,11 @@ const getAddCourse = async (req, res) => {
 };
 const getDetailCourse = async (req, res) => {
   const course = await CourseModel.getDetailCourse(req.params.id);
+  const date = new Date(course.created_at);
+  const day = String(date.getDate()).padStart(2, "0"); // Lấy ngày (dd)
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Lấy tháng (mm)
+  const year = String(date.getFullYear()).slice();
+  course.formattedDate = `${day}/${month}/${year}`;
   res.render("main", {
     data: {
       title: "detailCourse",
@@ -121,7 +126,7 @@ const getEditCourse = async (req, res) => {
       title: "detailCourse",
       header: "partials/header",
       page: "courses/editCourse",
-      course: course,
+      course,
       categories,
     },
   });

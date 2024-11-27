@@ -7,10 +7,10 @@
       <select name="category_id" class="form-select w-auto me-2" onchange="this.form.submit()">
         <option value="">Tất cả danh mục</option>
         <% data.categories.forEach(function(category) { %>
-        <option value="<%= category.id %>" <%= data.selectedCategory == category.id ? "selected" : "" %>>
-          <%= category.name %>
-        </option>
-        <% }) %>
+          <option value="<%= category.id %>" <%=data.selectedCategory==category.id ? "selected" : "" %>>
+            <%= category.name %>
+          </option>
+          <% }) %>
       </select>
     </form>
 
@@ -26,70 +26,84 @@
         <th>ID</th>
         <th class="col-1">Hình Ảnh</th>
         <th>Tên Khóa Học</th>
-        <th>Mô Tả</th>
+        <th class="col-4">Mô Tả</th>
         <th>Danh Mục</th>
         <th>Ngày Tạo</th>
         <th>Hành Động</th>
       </tr>
     </thead>
     <tbody>
-      <% if (data.courses.length === 0) { %>
-      <tr>
-        <td colspan="7" class="text-center">Không có khóa học liên quan</td>
-      </tr>
-      <% } else { %>
-      <% data.courses.forEach(function(course, index) { %>
-      <tr>
-        <td><%= index + 1 %></td>
-        <td>
-          <img src="<%= course.thumbnail_url %>" alt="Thumbnail" class="img-thumbnail w-100" />
-        </td>
-        <td><%= course.title %></td>
-        <td><%= course.description %></td>
-        <td><%= course.category_name %></td>
-        <td><%= course.formattedDate %></td>
+      <% if (data.courses.length===0) { %>
+        <tr>
+          <td colspan="7" class="text-center">Không có khóa học liên quan</td>
+        </tr>
+        <% } else { %>
+          <% data.courses.forEach(function(course, index) { %>
+            <tr>
+              <td>
+                <%= index + 1 %>
+              </td>
+              <td>
+                <img src="<%= course.thumbnail_url %>" alt="Thumbnail" class="img-thumbnail w-100" />
+              </td>
+              <td>
+                <%= course.title %>
+              </td>
+              <td>
+                <%= course.description %>
+              </td>
+              <td>
+                <%= course.category_name %>
+              </td>
+              <td>
+                <%= course.formattedDate %>
+              </td>
 
-        <td class="col-2 d-flex">
-          <a href="/admin/detailCourse/<%= course.id %>" class="btn btn-success btn-sm me-2">
-            <i class="bi bi-eye"></i> Xem
-          </a>
-          <a href="/admin/editCourse/<%= course.id %>" class="btn btn-primary btn-sm me-2">
-            <i class="bi bi-pencil-square"></i> Sửa
-          </a>
-          <a href="/api/removeCourse/<%= course.id %>" class="btn btn-danger btn-sm me-2">
-            <i class="bi bi-trash"></i> Xóa
-          </a>
-        </td>
-      </tr>
-      <% }) %>
-      <% } %>
+              <td class="col-2 d-flex">
+                <a href="/admin/detailCourse/<%= course.id %>" class="btn btn-success btn-sm me-2">
+                  <i class="bi bi-eye"></i> Xem
+                </a>
+                <a href="/admin/editCourse/<%= course.id %>" class="btn btn-primary btn-sm me-2">
+                  <i class="bi bi-pencil-square"></i> Sửa
+                </a>
+                <a href="/api/removeCourse/<%= course.id %>" class="btn btn-danger btn-sm me-2">
+                  <i class="bi bi-trash"></i> Xóa
+                </a>
+              </td>
+            </tr>
+            <% }) %>
+              <% } %>
     </tbody>
   </table>
 
   <div class="d-flex justify-content-center">
     <nav>
       <ul class="pagination">
-        <% if (data.currentPage > 1) { %>
-        <li class="page-item">
-          <a class="page-link" href="/admin/course?page=<%= data.currentPage - 1 %><%= data.selectedCategory ? '&category_id=' + data.selectedCategory : '' %>">Previous</a>
-        </li>
-        <% } else { %>
-        <li class="page-item disabled"><span class="page-link">Previous</span></li>
-        <% } %>
+        <% if (data.currentPage> 1) { %>
+          <li class="page-item">
+            <a class="page-link"
+              href="/admin/course?page=<%= data.currentPage - 1 %><%= data.selectedCategory ? '&category_id=' + data.selectedCategory : '' %>">Previous</a>
+          </li>
+          <% } else { %>
+            <li class="page-item disabled"><span class="page-link">Previous</span></li>
+            <% } %>
 
-        <% for (let i = 1; i <= data.totalPages; i++) { %>
-        <li class="page-item <%= i === data.currentPage ? 'active' : '' %>">
-          <a class="page-link" href="/admin/course?page=<%= i %><%= data.selectedCategory ? '&category_id=' + data.selectedCategory : '' %>"><%= i %></a>
-        </li>
-        <% } %>
-
-        <% if (data.currentPage < data.totalPages) { %>
-        <li class="page-item">
-          <a class="page-link" href="/admin/course?page=<%= data.currentPage + 1 %><%= data.selectedCategory ? '&category_id=' + data.selectedCategory : '' %>">Next</a>
-        </li>
-        <% } else { %>
-        <li class="page-item disabled"><span class="page-link">Next</span></li>
-        <% } %>
+              <% for (let i=1; i <=data.totalPages; i++) { %>
+                <li class="page-item <%= i === data.currentPage ? 'active' : '' %>">
+                  <a class="page-link"
+                    href="/admin/course?page=<%= i %><%= data.selectedCategory ? '&category_id=' + data.selectedCategory : '' %>">
+                    <%= i %>
+                  </a>
+                </li>
+                <% } %>
+                  <% if (data.currentPage < data.totalPages) { %>
+                    <li class="page-item">
+                      <a class="page-link"
+                        href="/admin/course?page=<%= data.currentPage + 1 %><%= data.selectedCategory ? '&category_id=' + data.selectedCategory : '' %>">Next</a>
+                    </li>
+                    <% } else { %>
+                      <li class="page-item disabled"><span class="page-link">Next</span></li>
+                      <% } %>
       </ul>
     </nav>
   </div>

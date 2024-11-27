@@ -161,6 +161,24 @@ const addReview = async (req, res) => {
     message: "Add review successfully",
   });
 };
+const editReview = async (req, res) => {
+  console.log(req.body);
+  const data = req.body;
+  const result = await ReviewModel.editReview(
+    data.rating,
+    data.comment,
+    data.idReview
+  );
+  if (result.error) {
+    console.log(result.error);
+    return res.status(400).json({
+      message: "Edit review failed",
+    });
+  }
+  res.json({
+    message: "Edit review successfully",
+  });
+};
 const getReviewByIdCourse = async (req, res) => {
   const { id } = req.params;
   const reviews = await ReviewModel.getReviewByIdCourse(id);
@@ -282,7 +300,6 @@ const addCourse = async (req, res) => {
       return res.status(400).send("Vui lòng điền đầy đủ thông tin");
     }
   }
-  console.log(req.body.category_id);
   await CourseModel.addCourse(req.body);
   return res.redirect("/admin/course");
 };
@@ -292,12 +309,10 @@ const removeCourse = async (req, res) => {
     await CourseModel.removeCourse(idCourse);
     return res.redirect("back");
   } catch (error) {
-    // Kiểm tra lỗi khóa ngoại
-    if (error.code === "ER_ROW_IS_REFERENCED_2") {
-      return res
-        .status(400)
-        .send("Khóa học đã có người đăng ký và không thể xóa.");
-    }
+    console.error("Error removing course:", error);
+    return res
+      .status(200)
+      .send("Đã có lỗi xảy ra hoặc khóa học đã được đăng ký");
   }
 };
 
@@ -349,6 +364,7 @@ export default {
   // REVIEW
   updateStatusReview,
   addReview,
+  editReview,
   getReviewByIdCourse,
 
   // CATEGORY

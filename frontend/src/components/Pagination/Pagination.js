@@ -9,7 +9,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     <div className="d-flex justify-content-center">
       <nav>
         <ul className="pagination">
-          {/* Nút Previous */}
           {currentPage > 1 ? (
             <li className="page-item">
               <button
@@ -40,7 +39,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             </li>
           ))}
 
-          {/* Nút Next */}
           {currentPage < totalPages ? (
             <li className="page-item">
               <button
