@@ -3,7 +3,6 @@ import React, { useEffect, useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Courses from "../components/CourseCard/detailCourse";
 import ReviewCourse from "../components/CourseCard/ReviewCourse";
 import Cookie from "js-cookie";
 import { Link } from "react-router-dom";

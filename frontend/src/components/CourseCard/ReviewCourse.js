@@ -33,7 +33,6 @@ const StarRating = ({ rating }) => {
 const ReviewCourse = () => {
   const { user, loading } = useContext(AuthContext);
   const { idCourses } = useParams();
-
   const [isReview, setIsReview] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [reviews, setReviews] = useState([]);
@@ -128,6 +127,8 @@ const ReviewCourse = () => {
       `${process.env.REACT_APP_API_URL}/api/getReviewByIdCourse/${idCourses}`
     );
     const resReviews = res.data.reviews;
+    console.log(resReviews);
+
     setReviews(resReviews);
     const reviewUser = resReviews.find((review) => review.user_id == user.id);
     // kiểm tra đã từng review

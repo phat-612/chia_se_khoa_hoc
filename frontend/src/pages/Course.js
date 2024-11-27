@@ -24,8 +24,8 @@ const Course = () => {
       if (!response) {
         throw new Error("Failed to fetch courses");
       }
-      console.log(response.data.total);
       setCourses(response.data.courses);
+
       setTotalPages(Math.ceil(response.data.total / itemsPerPage));
     } catch (err) {
       setError(err.message);

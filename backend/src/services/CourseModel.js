@@ -29,10 +29,6 @@ LEFT JOIN courses c ON e.course_id = c.id
 WHERE e.user_id = ?
 `;
   const rows = await pool.execute(sql, [userId]);
-  console.log(
-    "----------------------------------------------------------------"
-  );
-  console.log(rows[0]);
   return rows[0];
 };
 const getTotalCourses = async (category_id) => {
@@ -167,7 +163,6 @@ const getCategories = async () => {
 };
 const getAllCoursesUser = async (limit, offset, search = "") => {
   const searchQuery = `%${search}%`;
-
   const coursesSql = `
     SELECT 
       courses.id, 
@@ -182,13 +177,11 @@ const getAllCoursesUser = async (limit, offset, search = "") => {
     WHERE courses.title LIKE ? OR courses.description LIKE ?
     LIMIT ? OFFSET ?;
   `;
-  //
-  const countSql = `
+  const count = `
     SELECT COUNT(*) AS total
     FROM courses
     WHERE title LIKE ? OR description LIKE ?;  
   `;
-
   // Truy vấn lấy khóa học theo tìm kiếm và phân trang
   const [rows] = await pool.execute(coursesSql, [
     searchQuery,
@@ -196,20 +189,13 @@ const getAllCoursesUser = async (limit, offset, search = "") => {
     limit,
     offset,
   ]);
-  console.log(rows);
   // Nếu không có kết quả, trả về mảng rỗng và tổng số = 0
   if (rows.length == 0) {
     return { courses: [], total: 0 };
   }
 
   // Truy vấn lấy tổng số khóa học theo tìm kiếm
-  const [countRows] = await pool.execute(countSql, [searchQuery, searchQuery]);
-
-  // Kiểm tra nếu countRows là mảng hợp lệ
-  if (!Array.isArray(countRows)) {
-    throw new Error("Dữ liệu trả về không phải là mảng");
-  }
-
+  const [countRows] = await pool.execute(count, [searchQuery, searchQuery]);
   const total = countRows[0].total;
   return {
     courses: rows, // Danh sách khóa học

@@ -322,11 +322,10 @@ const updateCourse = async (req, res) => {
   await CourseModel.updateCourse(idCourse, req.body);
   return res.redirect("/admin/course");
 };
-// lấy tất cả sản phẩm hiện ra giao diện
+// lấy tất cả khóa học hiện ra giao diện
 const getAllCoures = async (req, res) => {
-  // Lấy limit và offset từ query params
-  const limit = parseInt(req.query.limit) || 8;
-  const offset = parseInt(req.query.offset) || 0;
+  const limit = parseInt(req.query.limit);
+  const offset = parseInt(req.query.offset);
   const search = req.query.search || "";
   try {
     const { courses, total } = await CourseModel.getAllCoursesUser(
@@ -334,7 +333,6 @@ const getAllCoures = async (req, res) => {
       offset,
       search
     );
-
     // Trả kết quả về cho frontend
     return res.json({ courses, total });
   } catch (error) {
@@ -342,12 +340,9 @@ const getAllCoures = async (req, res) => {
     return res.status(500).json({ error: "Đã xảy ra lỗi khi lấy dữ liệu" });
   }
 };
+// chi tiết khóa học
 const getDetailCoure = async (req, res) => {
   const id = req.params.idCourses;
-  if (!id) {
-    return res.status(400).json({ message: "Thiếu id" });
-  }
-
   const detailCourse = await CourseModel.getDetailCourse(id);
   return res.json(detailCourse);
 };
