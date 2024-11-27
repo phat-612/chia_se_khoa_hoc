@@ -2,7 +2,7 @@ import React from "react";
 
 const ReviewCourse = () => {
   return (
-    <div className="container">
+    <div className="container mt-4">
       <div className="d-flex flex-start w-100">
         <img
           className="rounded-circle shadow-1-strong me-3"
@@ -57,8 +57,17 @@ const ReviewCourse = () => {
       <div className="d-flex justify-content-center mt-4">
         <div className="text-body">
           <div className=" p-3">
-            <h3 className="mb-0">Đánh giá khóa học</h3>
-            <p class="fw-light mb-4 pb-2">Latest Comments section by users</p>
+            <div className="d-flex justify-content-between mb-5">
+              <h3 className="mb-0">Đánh giá khóa học</h3>
+              <select
+                class="fw-light border-0"
+                style={{ outline: "none", boxShadow: "none" }}
+              >
+                <option value="">Sắp xếp đánh giá</option>
+                <option value="old">Đánh giá cũ nhất</option>
+                <option value="new">Đánh giá mới nhất</option>
+              </select>
+            </div>
 
             <div className="d-flex flex-start">
               <img
