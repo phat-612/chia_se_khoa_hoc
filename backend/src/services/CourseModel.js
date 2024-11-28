@@ -14,7 +14,24 @@ const getCourses = async (limit, offset) => {
     return { error: error.message };
   }
 };
-
+const getCoursesHighSubscribe = async (limit) => {
+  const sql = `SELECT COUNT(user_id) AS total_subscribe, courses.* FROM courses LEFT JOIN enrollments ON courses.id = enrollments.course_id GROUP BY courses.id ORDER BY total_subscribe DESC LIMIT ?`;
+  try {
+    const [rows] = await pool.execute(sql, [limit]);
+    return rows;
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+const getNewCourses = async (limit) => {
+  const sql = `SELECT * FROM courses ORDER BY created_at DESC LIMIT ?`;
+  try {
+    const [rows] = await pool.execute(sql, [limit]);
+    return rows;
+  } catch (error) {
+    return { error: error.message };
+  }
+};
 const getCoursesByUserId = async (userId) => {
   const sql = `SELECT 
     e.id AS enrollment_id,
@@ -146,10 +163,10 @@ const updateCourse = async (id, data) => {
       id,
     ]);
 
-    return rows; // Trả về kết quả từ truy vấn
+    return rows;
   } catch (error) {
     console.error("Error updating course:", error);
-    throw error; // Đảm bảo ném lỗi nếu có lỗi xảy ra
+    throw error;
   }
 };
 const getCategories = async () => {
@@ -205,6 +222,8 @@ const getAllCoursesUser = async (limit, offset, search = "") => {
 
 export default {
   getCourses,
+  getCoursesHighSubscribe,
+  getNewCourses,
   addCourse,
   removeCourse,
   updateCourse,

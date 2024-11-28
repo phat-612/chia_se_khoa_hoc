@@ -13,6 +13,7 @@ const getAllReviews = async (find, rating, status, limit, offset) => {
     limit,
     offset,
   ];
+
   try {
     const [rows] = await pool.query(sql, values);
     return rows;

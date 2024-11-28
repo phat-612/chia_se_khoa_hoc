@@ -46,7 +46,7 @@ const getCategoryPage = async (req, res) => {
 
 // COURSES
 const getCoursePage = async (req, res) => {
-  const { category_id, page = 1 } = req.query; // Lấy category_id và page từ query string (mặc định là trang 1)
+  const { category_id, page = 1 } = req.query;
   const limit = 5; // Số khóa học mỗi trang
   const offset = (page - 1) * limit; //bỏ qua số khóa học
 
@@ -183,7 +183,6 @@ const getReviewPage = async (req, res) => {
     status
   );
   const totalPage = Math.ceil(quantityReviews / limit);
-  console.log(reviews);
   reviews = reviews.map((review) => {
     return {
       ...review,
@@ -192,7 +191,6 @@ const getReviewPage = async (req, res) => {
         .format("DD/MM/YYYY"),
     };
   });
-  console.log(parseInt(page));
   res.render("main", {
     data: {
       title: "Reviews",

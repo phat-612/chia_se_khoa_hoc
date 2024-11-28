@@ -6,6 +6,7 @@ const Register = () => {
   const [inpRegister, setInpRegister] = useState({
     username: "",
     password: "",
+    rePassword: "",
     email: "",
     fullname: "",
   });
@@ -20,6 +21,7 @@ const Register = () => {
     if (
       !inpRegister.username ||
       !inpRegister.password ||
+      !inpRegister.rePassword ||
       !inpRegister.email ||
       !inpRegister.fullname
     ) {
@@ -36,6 +38,10 @@ const Register = () => {
     }
     if (inpRegister.fullname.length < 6) {
       setError("Vui lòng nhập họ tên ít nhất 6 ký tự");
+      return false;
+    }
+    if (inpRegister.password !== inpRegister.rePassword) {
+      setError("Mật khẩu không khớp");
       return false;
     }
     setError("");
@@ -62,34 +68,6 @@ const Register = () => {
     >
       <form>
         <div className="mb-3">
-          <label htmlFor="username" className="form-label">
-            Username
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="username"
-            name="username"
-            onChange={handleChangeInput}
-            value={inpRegister.username}
-            placeholder="Enter username"
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="password" className="form-label">
-            Password
-          </label>
-          <input
-            type="password"
-            className="form-control"
-            id="password"
-            name="password"
-            onChange={handleChangeInput}
-            value={inpRegister.password}
-            placeholder="Enter password"
-          />
-        </div>
-        <div className="mb-3">
           <label htmlFor="email" className="form-label">
             Email
           </label>
@@ -100,12 +78,12 @@ const Register = () => {
             name="email"
             onChange={handleChangeInput}
             value={inpRegister.email}
-            placeholder="Enter email"
+            placeholder="Nhập email"
           />
         </div>
         <div className="mb-3">
           <label htmlFor="fullname" className="form-label">
-            Full Name
+            Họ và tên
           </label>
           <input
             type="text"
@@ -114,7 +92,49 @@ const Register = () => {
             name="fullname"
             onChange={handleChangeInput}
             value={inpRegister.fullname}
-            placeholder="Enter full name"
+            placeholder="Nhập họ và tên"
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="username" className="form-label">
+            Tài khoản
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="username"
+            name="username"
+            onChange={handleChangeInput}
+            value={inpRegister.username}
+            placeholder="Nhập tài khoản"
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">
+            Mật khẩu
+          </label>
+          <input
+            type="password"
+            className="form-control"
+            id="password"
+            name="password"
+            onChange={handleChangeInput}
+            value={inpRegister.password}
+            placeholder="Nhập mật khẩu"
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">
+            Xác nhận mật khẩu
+          </label>
+          <input
+            type="password"
+            className="form-control"
+            id="rePassword"
+            name="rePassword"
+            onChange={handleChangeInput}
+            value={inpRegister.rePassword}
+            placeholder="Nhập lại mật khẩu"
           />
         </div>
         <div>

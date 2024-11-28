@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import moment from "moment";
 import Cookie from "js-cookie";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -96,9 +96,7 @@ const ReviewCourse = () => {
         getReview();
         setIsEdit(false);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
   // sắp xếp
   const handleChangeSort = (event) => {
@@ -126,7 +124,7 @@ const ReviewCourse = () => {
     const res = await axios.get(
       `${process.env.REACT_APP_API_URL}/api/getReviewByIdCourse/${idCourses}`
     );
-    const resReviews = res.data.reviews;
+    const resReviews = res.data.reviews || [];
     console.log(resReviews);
 
     setReviews(resReviews);
@@ -147,119 +145,131 @@ const ReviewCourse = () => {
     getReview();
   }, [loading]);
   return (
-    <div className="container mt-4">
-      <div className="d-flex flex-start w-100">
-        <img
-          className="rounded-circle shadow-1-strong me-3"
-          src={user.avatar}
-          alt="avatar"
-          width="65"
-          height="65"
-        />
-        <div className="w-100">
-          <h5 className="mb-0 text-capitalize">{user.fullname}</h5>
-          <ul
-            data-mdb-rating-init
-            className="d-flex rating list-unstyled fs-4 mb-3 "
-            data-mdb-toggle="rating"
-          >
-            {[1, 2, 3, 4, 5].map((rating) =>
-              rating <= formReview.rating ? (
-                <li
-                  onClick={() => {
-                    handleClickStar(rating);
-                  }}
-                  className="me-1 "
-                  style={{ cursor: "pointer" }}
-                  key={rating}
-                >
-                  <i className="fa-solid fa-star text-warning"></i>
-                </li>
-              ) : (
-                <li
-                  onClick={() => {
-                    handleClickStar(rating);
-                  }}
-                  className="me-1"
-                  style={{ cursor: "pointer" }}
-                  key={rating}
-                >
-                  <i className="fa-regular fa-star text-warning"></i>
-                </li>
-              )
-            )}
-          </ul>
-          <div data-mdb-input-init className="form-outline">
-            <textarea
-              maxLength="500"
-              className="form-control"
-              id="textAreaExample"
-              rows="4"
-              placeholder="Nhập đánh giá của bạn..."
-              name="comment"
-              onChange={handleInputCmt}
-              value={formReview.comment}
-              disabled={isReview && !isEdit}
+    <div className="container mt-5">
+      <h3 className="mb-4">Đánh giá khóa học</h3>
+      {user.id ? (
+        <div className="d-flex flex-start w-100">
+          <img
+            className="rounded-circle shadow-1-strong me-3"
+            src={user.avatar}
+            alt="avatar"
+            width="65"
+            height="65"
+          />
+          <div className="w-100">
+            <h5 className="mb-0 text-capitalize">{user.fullname}</h5>
+            <ul
+              data-mdb-rating-init
+              className="d-flex rating list-unstyled fs-4 mb-3 "
+              data-mdb-toggle="rating"
             >
-              {formReview.comment}
-            </textarea>
+              {[1, 2, 3, 4, 5].map((rating) =>
+                rating <= formReview.rating ? (
+                  <li
+                    onClick={() => {
+                      handleClickStar(rating);
+                    }}
+                    className="me-1 "
+                    style={{ cursor: "pointer" }}
+                    key={rating}
+                  >
+                    <i className="fa-solid fa-star text-warning"></i>
+                  </li>
+                ) : (
+                  <li
+                    onClick={() => {
+                      handleClickStar(rating);
+                    }}
+                    className="me-1"
+                    style={{ cursor: "pointer" }}
+                    key={rating}
+                  >
+                    <i className="fa-regular fa-star text-warning"></i>
+                  </li>
+                )
+              )}
+            </ul>
+            <div data-mdb-input-init className="form-outline">
+              <textarea
+                maxLength="500"
+                className="form-control"
+                id="textAreaExample"
+                rows="4"
+                placeholder="Nhập đánh giá của bạn..."
+                name="comment"
+                onChange={handleInputCmt}
+                value={formReview.comment}
+                disabled={isReview && !isEdit}
+              >
+                {formReview.comment}
+              </textarea>
+            </div>
+            {isReview && !isEdit ? (
+              <div className="d-flex justify-content-end my-3">
+                <button
+                  type="button"
+                  data-mdb-button-init
+                  data-mdb-ripple-init
+                  className="btn btn-success"
+                  onClick={() => {
+                    setIsEdit(true);
+                  }}
+                >
+                  Sửa đánh giá
+                </button>
+              </div>
+            ) : !isReview ? (
+              <div className="d-flex justify-content-end my-3">
+                <button
+                  type="button"
+                  data-mdb-button-init
+                  data-mdb-ripple-init
+                  className="btn btn-success"
+                  onClick={handleSendReview}
+                >
+                  Gửi đánh giá
+                </button>
+              </div>
+            ) : (
+              <div className="d-flex justify-content-end my-3">
+                <button
+                  type="button"
+                  data-mdb-button-init
+                  data-mdb-ripple-init
+                  className="btn btn-outline-secondary me-3"
+                  onClick={handleCancelEdit}
+                >
+                  Hủy
+                </button>
+                <button
+                  type="button"
+                  data-mdb-button-init
+                  data-mdb-ripple-init
+                  className="btn btn-success"
+                  onClick={handleEditReview}
+                >
+                  Gửi yêu cầu sửa đánh giá
+                </button>
+              </div>
+            )}
           </div>
-          {isReview && !isEdit ? (
-            <div className="d-flex justify-content-end my-3">
-              <button
-                type="button"
-                data-mdb-button-init
-                data-mdb-ripple-init
-                className="btn btn-success"
-                onClick={() => {
-                  setIsEdit(true);
-                }}
-              >
-                Sửa đánh giá
-              </button>
-            </div>
-          ) : !isReview ? (
-            <div className="d-flex justify-content-end my-3">
-              <button
-                type="button"
-                data-mdb-button-init
-                data-mdb-ripple-init
-                className="btn btn-success"
-                onClick={handleSendReview}
-              >
-                Gửi đánh giá
-              </button>
-            </div>
-          ) : (
-            <div className="d-flex justify-content-end my-3">
-              <button
-                type="button"
-                data-mdb-button-init
-                data-mdb-ripple-init
-                className="btn btn-outline-secondary me-3"
-                onClick={handleCancelEdit}
-              >
-                Hủy
-              </button>
-              <button
-                type="button"
-                data-mdb-button-init
-                data-mdb-ripple-init
-                className="btn btn-success"
-                onClick={handleEditReview}
-              >
-                Gửi yêu cầu sửa đánh giá
-              </button>
-            </div>
-          )}
         </div>
-      </div>
+      ) : (
+        <center>
+          <p>
+            Vui lòng đăng nhập để đánh giá khóa học.{" "}
+            <Link to="/login" className>
+              Đăng nhập
+            </Link>
+          </p>
+        </center>
+      )}
       <div className="">
         <div className="text-body">
           <div className=" p-3">
             {/* sort theo ngày */}
-            <div className="d-flex justify-content-between mb-5">
-              <h3 className="mb-0">Đánh giá khóa học</h3>
+            <div className="d-flex justify-content-between mb-4">
+              <h3 className="mb-0">Điểm xếp hạng và đánh giá của khóa học</h3>
               <select
                 className="fw-light border-0"
                 style={{ outline: "none", boxShadow: "none" }}

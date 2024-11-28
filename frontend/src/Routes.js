@@ -10,11 +10,16 @@ import ChangePassword from "./pages/ChangePassword";
 import MyCourses from "./pages/MyCourses";
 import Course from "./pages/Course";
 import DetailCourses from "./pages/DetailCourses";
+import Home from "./pages/Home";
 const routes = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
     children: [
+      {
+        path: "",
+        element: <Home />,
+      },
       {
         path: "login",
         element: <Login />,

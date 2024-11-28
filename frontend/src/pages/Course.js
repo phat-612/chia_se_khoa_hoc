@@ -11,6 +11,7 @@ const Course = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+
   const itemsPerPage = 8;
 
   const fetchCourses = async (page = 1, search = "") => {
@@ -36,7 +37,6 @@ const Course = () => {
 
   useEffect(() => {
     fetchCourses(currentPage, searchQuery);
-    // console.log(searchQuery);
   }, [currentPage, searchQuery]);
 
   const handleSearch = (query) => {

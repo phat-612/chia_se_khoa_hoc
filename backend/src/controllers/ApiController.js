@@ -120,6 +120,9 @@ const getUserById = async (req, res) => {
   // id user lấy từ middleware xác thực token
   const { id } = req.user;
   const user = await UserModel.getUserById(id);
+  if (!user) {
+    return res.status(400).json({ error: "User not found" });
+  }
   if (user.error) {
     return res.status(400).json({ error: "Get user by id failed" });
   }
@@ -265,7 +268,21 @@ const getMyCourses = async (req, res) => {
     res.status(500).json({ message: "Lỗi máy chủ." });
   }
 };
-
+const getCoursesHighSubscribe = async (req, res) => {
+  let limit = parseInt(req.query.limit) || 8;
+  const courses = (await CourseModel.getCoursesHighSubscribe(limit)) || [];
+  return res.json({
+    courses,
+  });
+};
+const getNewCourses = async (req, res) => {
+  const limit = parseInt(req.query.limit) || 8;
+  const courses = await CourseModel.getNewCourses(limit);
+  return res.json({
+    courses,
+    cokeu: "cokeu",
+  });
+};
 const checkRegisterCourses = async (req, res) => {
   const { userId, coursesId } = req.body;
   const result = await CourseModel.checkRegisterCourses(userId, coursesId);
@@ -370,6 +387,8 @@ export default {
   removeCategory,
   // course
   getMyCourses,
+  getCoursesHighSubscribe,
+  getNewCourses,
   addCourse,
   removeCourse,
   updateCourse,

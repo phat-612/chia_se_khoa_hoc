@@ -99,7 +99,7 @@ const Header = ({ listNav }) => {
             <ul className="nav justify-content-center gap-2">
               <Link
                 to="/login"
-                className="nav-link px-2 link-dark text-decoration-none btn-primary btn"
+                className="nav-link text-white px-2 link-dark text-decoration-none btn-primary btn"
               >
                 Đăng nhập
               </Link>
